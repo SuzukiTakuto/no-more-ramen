@@ -1,5 +1,5 @@
 from django.db import models
-from django.contrib.auth.models import BaseUserManager
+from django.contrib.auth.models import BaseUserManager, PermissionsMixin
 from django.contrib.auth.validators import UnicodeUsernameValidator
 from django.utils.translation import gettext_lazy as _
 from django.contrib.auth.base_user import AbstractBaseUser
@@ -68,7 +68,7 @@ class UserManager(BaseUserManager):
         return self.none()
 
 
-class User(AbstractBaseUser):
+class User(AbstractBaseUser, PermissionsMixin):
     username_validator = UnicodeUsernameValidator()
 
     username = models.CharField(
@@ -81,6 +81,7 @@ class User(AbstractBaseUser):
         error_messages={
             'unique': _("A user with that username already exists."),
         },
+        primary_key=True
     )
 
     email = models.EmailField(
@@ -127,5 +128,5 @@ class User(AbstractBaseUser):
         swappable = 'AUTH_USER_MODEL'
 
     def email_user(self, subject, message, from_email=None, **kwargs):
-        """Send an email to this user."""
+        """Email this user."""
         send_mail(subject, message, from_email, [self.email], **kwargs)
