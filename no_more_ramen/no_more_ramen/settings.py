@@ -169,6 +169,7 @@ EMAIL_PORT = 587
 EMAIL_HOST_USER = 'nikkii.official126@gmail.com'
 EMAIL_HOST_PASSWORD = 'shibaura20xx'
 EMAIL_USE_TLS = True
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
 LOGGING = {
     'version': 1,
