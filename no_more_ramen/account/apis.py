@@ -3,29 +3,31 @@ from django.contrib.auth import get_user_model
 from django.contrib.sites.shortcuts import get_current_site
 from django.core.signing import BadSignature, SignatureExpired, loads, dumps
 from django.template.loader import render_to_string
+from django.db import transaction
 
-from rest_framework import views, status
+from rest_framework import views, status, generics
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.response import Response
 from rest_framework_simplejwt.tokens import RefreshToken
 
-from .serializer import UserSerializer
+from .serializer import CreateUserSerializer, UpdateUserSerializer
 
 User = get_user_model()
 
 
-class CreateUser(views.APIView):
+class CreateUser(generics.CreateAPIView):
     permission_classes = [AllowAny]
+    serializer_class = CreateUserSerializer
+    queryset = User.objects.all()
 
+    @transaction.atomic
     def post(self, request, *args, **kwargs):
         """仮登録と本登録用のメールの発行"""
-        serializer = UserSerializer(data=request.data)
+        serializer = CreateUserSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         serializer.save()
 
         user = User.objects.get(email=request.data["email"])
-        user.is_active = False
-        user.save()
         # アクティベーションURLの送付
         current_site = get_current_site(self.request)
         domain = current_site.domain
@@ -74,7 +76,9 @@ class CreateUserComplete(views.APIView):
                     # 問題なければ本登録とする
                     user.is_active = True
                     user.save()
-                    return Response(data={"username", user.username}, status=status.HTTP_200_OK)
+                    token = RefreshToken.for_user(user)
+                    token.blacklist()
+                    return Response(data={"token", token}, status=status.HTTP_200_OK)
 
         return Response(status=status.HTTP_400_BAD_REQUEST)
 
@@ -108,7 +112,7 @@ class UpdateUserView(views.APIView):
 
     def put(self, request):
         user = request.user
-        serializer = UserSerializer(user, data=request.data)
+        serializer = UpdateUserSerializer(user, data=request.data)
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response(serializer.data, status=status.HTTP_200_OK)
