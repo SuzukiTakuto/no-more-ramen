@@ -1,6 +1,5 @@
 from django.conf import settings
 from django.contrib.auth import get_user_model
-from django.contrib.sites.shortcuts import get_current_site
 from django.core.signing import BadSignature, SignatureExpired, loads, dumps
 from django.template.loader import render_to_string
 from django.db import transaction
@@ -24,7 +23,9 @@ class CreateUser(generics.CreateAPIView):
     def post(self, request, *args, **kwargs):
         """仮登録と本登録用のメールの発行"""
         serializer = CreateUserSerializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
+        if serializer.is_valid() is False:
+            serializer.errors["status"] = 400
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         serializer.save()
 
         user = User.objects.get(email=request.data["email"])
@@ -41,7 +42,7 @@ class CreateUser(generics.CreateAPIView):
         from_email = 'nikkii.official126@gmail.com'
 
         user.email_user(subject, message, from_email)
-        return Response({'status': 201}, status=status.HTTP_201_CREATED)
+        return Response({'status': 201, 'username': user.username}, status=status.HTTP_201_CREATED)
 
 
 class CreateUserComplete(views.APIView):
@@ -57,18 +58,18 @@ class CreateUserComplete(views.APIView):
 
         # 期限切れ
         except SignatureExpired:
-            return Response(status=status.HTTP_400_BAD_REQUEST)
+            return Response({"status": 400, "error": "signature expired"}, status=status.HTTP_400_BAD_REQUEST)
 
         # tokenが間違っている
         except BadSignature:
-            return Response(status=status.HTTP_400_BAD_REQUEST)
+            return Response({"status": 400, "error": "bad signature"}, status=status.HTTP_400_BAD_REQUEST)
 
         # tokenは問題なし
         else:
             try:
                 user = User.objects.get(pk=user_pk)
             except User.DoesNotExist:
-                return Response(status=status.HTTP_400_BAD_REQUEST)
+                return Response({"status": 400, "error": "user doesn't exist"}, status=status.HTTP_400_BAD_REQUEST)
             else:
                 if not user.is_active:
                     # 問題なければ本登録とする
@@ -76,7 +77,7 @@ class CreateUserComplete(views.APIView):
                     user.save()
                     token = RefreshToken.for_user(user)
                     token.blacklist()
-                    return Response(data={"token", token}, status=status.HTTP_200_OK)
+                    return Response(data={"status": 200, "token": token}, status=status.HTTP_200_OK)
 
         return Response(status=status.HTTP_400_BAD_REQUEST)
 
@@ -87,7 +88,7 @@ class LogoutView(views.APIView):
     def get(self, request):
         token = RefreshToken.for_user(request.user)
         token.blacklist()
-        return Response({"username": request.user.username}, status=status.HTTP_205_RESET_CONTENT)
+        return Response({"status": 205, "username": request.user.username}, status=status.HTTP_205_RESET_CONTENT)
 
 
 class UserInformationView(views.APIView):
@@ -96,6 +97,7 @@ class UserInformationView(views.APIView):
     def get(self, request):
         user = request.user
         context = {
+            "status": 200,
             "username": user.username,
             "email": user.email,
             "icon_id": user.icon_id,
@@ -111,6 +113,8 @@ class UpdateUserView(views.APIView):
     def put(self, request):
         user = request.user
         serializer = UpdateUserSerializer(user, data=request.data)
-        serializer.is_valid(raise_exception=True)
+        if serializer.is_valid() is False:
+            serializer.errors["status"] = 400
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         serializer.save()
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response({"status": 200, "username": user.username}, status=status.HTTP_200_OK)
