@@ -105,6 +105,11 @@ class User(AbstractBaseUser, PermissionsMixin):
         default=0
     )
 
+    send_report = models.BooleanField(
+        _("send report　by email"),
+        default=True
+    )
+
     is_admin = models.BooleanField(default=False)
     is_staff = models.BooleanField(_('staff status'), default=False)
     is_active = models.BooleanField(

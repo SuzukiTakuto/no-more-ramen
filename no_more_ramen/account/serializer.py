@@ -13,7 +13,7 @@ class UpdateUserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ('username', 'mail', 'sex', 'icon_id')
+        fields = ('username', 'sex', 'icon_id', 'send_report')
 
 
 class CreateUserSerializer(serializers.ModelSerializer):
@@ -30,11 +30,11 @@ class CreateUserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ('username', 'password', 'password2', 'email')
+        fields = ('username', 'email', 'password', 'password2')
 
     def validate(self, attrs):
         if attrs['password'] != attrs['password2']:
-            raise serializers.ValidationError({"password": "Password fields didn't match."})
+            raise serializers.ValidationError({"password2": "Password fields didn't match."})
 
         return attrs
 
