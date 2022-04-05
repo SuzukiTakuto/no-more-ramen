@@ -28,11 +28,9 @@ class CreateUser(generics.CreateAPIView):
         serializer.save()
 
         user = User.objects.get(email=request.data["email"])
-        # アクティベーションURLの送付
-        current_site = get_current_site(self.request)
-        domain = current_site.domain
+        domain = "localhost:3000"
         context = {
-            'protocol': "http://localhost:3000",
+            'protocol': "http",
             'domain': domain,
             'token': dumps(user.username),
             'username': user.username,
