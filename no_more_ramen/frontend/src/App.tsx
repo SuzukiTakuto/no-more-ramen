@@ -5,6 +5,7 @@ import UserSetup from './Pages/UserSetup';
 import MainPage from './Pages/MainPage';
 import Login from './Pages/Login';
 import Signup from './Pages/Signup';
+import SendMail from './Pages/SendMail';
 import Complete from './Pages/Complete';
 import styled,{ createGlobalStyle } from 'styled-components';
 import reset from 'styled-reset';
@@ -32,6 +33,9 @@ function App() {
             </Route>
             <Route path={"/signup"}>
               <Signup />
+            </Route>
+            <Route path={"/send_email"}>
+              <SendMail />
             </Route>
             <Route path={"/account/create/complete/:token"}>
               <Complete />

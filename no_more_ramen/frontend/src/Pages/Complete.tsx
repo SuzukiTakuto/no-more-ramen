@@ -1,15 +1,16 @@
 import React, { useEffect } from 'react';
-import styled from 'styled-components';
-import CompleteNoodle from '../icons/completeNoodle';
-import { Button, Message } from '../components/components';
+import { useParams } from 'react-router-dom';
 import { apiUrl } from '../utils';
-import { useParams, useHistory } from 'react-router-dom';
+
+type Param = {
+    token: string;
+}
 
 const Complete = () => {
-  const token = useParams<string>();
-  const history = useHistory();
+  const param = useParams<Param>();
+  console.log(param.token);
   useEffect(() => {
-      fetch(`${apiUrl}/account/create/complete/${token}`, {
+      fetch(`${apiUrl}/account/create/complete/${param.token}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -24,29 +25,9 @@ const Complete = () => {
       });
   }, []);
 
-  const onClick = () => {
-    history.push('/login');
-  }
-
   return (
-    <CompleteContainer>
-        <CompleteNoodleIcon>
-            <CompleteNoodle />
-        </CompleteNoodleIcon>
-        <Message>メールをお送りしました。</Message>
-        <Button bgColor={"#fff"} color={"#2BAD62"} stroke={"1px solid #2BAD62"} mt={"242px auto 0;"} onClick={() => onClick}>戻る</Button>
-    </CompleteContainer>
+    <div>登録完了</div>
   )
 }
-
-const CompleteContainer = styled.div`
-
-`;
-
-const CompleteNoodleIcon = styled.div`
-    width: 101.36px;
-    height: 162.16px;
-    margin: 0 auto 25.3px;;
-`;
 
 export default Complete
