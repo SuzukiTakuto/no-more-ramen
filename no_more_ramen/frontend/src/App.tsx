@@ -5,6 +5,7 @@ import UserSetup from './Pages/UserSetup';
 import MainPage from './Pages/MainPage';
 import Login from './Pages/Login';
 import Signup from './Pages/Signup';
+import Complete from './Pages/Complete';
 import styled,{ createGlobalStyle } from 'styled-components';
 import reset from 'styled-reset';
 
@@ -32,8 +33,8 @@ function App() {
             <Route path={"/signup"}>
               <Signup />
             </Route>
-            <Route path={"/complete"}>
-              aaaaa
+            <Route path={"/account/create/complete/:token"}>
+              <Complete />
             </Route>
           </Switch>
         </BrowserRouter>

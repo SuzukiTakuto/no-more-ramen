@@ -11,6 +11,7 @@ type ButtonProps = {
     bgColor: string;
     color: string;
     stroke: string;
+    mt?: string;
     onClick?: any;
 }
 
@@ -21,7 +22,7 @@ export const Button = styled.button<ButtonProps>`
     border: ${ ({ stroke }) => stroke };
     border-radius: 100px;
     color: ${ ({ color }) => color };
-    margin: 8px auto;
+    margin: ${({ mt }) => mt ? mt : "8px auto;"}
     cursor: pointer;
     background-color: ${ ({ bgColor }) => bgColor };
 `;
