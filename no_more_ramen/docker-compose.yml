@@ -3,6 +3,7 @@ services:
   db:
     container_name: no_more_ramen-container-db
     image: mysql:5.7
+    platform: linux/x86_64
     restart: always
     expose:
       - 3308
@@ -22,11 +23,10 @@ services:
 
   web:
     container_name: no_more_ramen-container
-    build: .
+    build: ./dockerfile/python
     restart: always
     command: >
       bash -c "
-        pip3 install -r requirements.txt &&
         python wait_for_db.py &&
         python manage.py makemigrations &&
         python manage.py migrate &&
@@ -41,4 +41,17 @@ services:
     depends_on:
       - db
 
+  react:
+    build:
+      context: .
+      dockerfile: ./dockerfile/react/Dockerfile
+    container_name: no_more_ramen_container_react
+    tty: true
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+    volumes:
+      - ./:/usr/src/frontend
+    command: sh -c "cd frontend && yarn install && yarn start"
+    ports:
+      - 3000:3000
 
