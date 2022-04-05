@@ -1,5 +1,19 @@
 version: "3"
 services:
+  react:
+    build:
+      context: .
+      dockerfile: ./dockerfile/react/Dockerfile
+    container_name: no_more_ramen_container_react
+    tty: true
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+    volumes:
+      - ./:/usr/src/frontend
+    command: sh -c "cd frontend && yarn install && yarn start"
+    ports:
+      - "3000:3000"
+
   db:
     container_name: no_more_ramen-container-db
     image: mysql:5.7
@@ -40,18 +54,3 @@ services:
       - ./:/code
     depends_on:
       - db
-
-  react:
-    build:
-      context: .
-      dockerfile: ./dockerfile/react/Dockerfile
-    container_name: no_more_ramen_container_react
-    tty: true
-    environment:
-      - CHOKIDAR_USEPOLLING=true
-    volumes:
-      - ./:/usr/src/frontend
-    command: sh -c "cd frontend && yarn install && yarn start"
-    ports:
-      - 3000:3000
-

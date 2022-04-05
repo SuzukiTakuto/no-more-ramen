@@ -41,7 +41,7 @@ class CreateUser(generics.CreateAPIView):
         from_email = 'nikkii.official126@gmail.com'
 
         user.email_user(subject, message, from_email)
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response({'status': 201}, status=status.HTTP_201_CREATED)
 
 
 class CreateUserComplete(views.APIView):
