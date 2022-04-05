@@ -1,6 +1,6 @@
 import React from 'react';
 import { useForm, SubmitHandler, SubmitErrorHandler } from 'react-hook-form';
-import { User } from '../type/type';
+import { User, SignupUser } from '../type/type';
 import { useHistory } from 'react-router-dom';
 import { apiUrl } from '../utils';
 import styled from 'styled-components';
@@ -11,20 +11,21 @@ import { NoodleIcon } from '../components/components';
 const Signup = () => {
   const history = useHistory();
 
-  const { register, watch, handleSubmit, formState } = useForm<User>({
+  const { register, watch, handleSubmit, formState } = useForm<SignupUser>({
   mode: 'onSubmit',
     reValidateMode: 'onChange',
       defaultValues: {
         username: '',
         email: '',
         password: '',
+        password2: '',
     }
   });
 
   const handleOnSubmit: SubmitHandler<User> = async (values) => {
     console.log(values);
 
-    return fetch (`${apiUrl}/`, {
+    return fetch (`${apiUrl}/account/create/`, {
         method: 'POST',
         mode: 'cors',
         cache: 'no-cache',
@@ -36,9 +37,7 @@ const Signup = () => {
         body: JSON.stringify(values)
     }).then((res) => {
         return res.json();
-    }).then((data) => {
-        console.log(data.token)
-        localStorage.setItem("token", data.token)
+    }).then(() => {
         //window.location.href = "http://localhost:3000/login";
         history.push(`/login`);
     }).catch(()=>{
@@ -88,7 +87,7 @@ const Signup = () => {
                     />
                 </Input>
                 
-                <Input mb={47}>
+                <Input>
                     {!!formState.errors.password && 
                     <p>{formState.errors.password.message}</p>
                     }
@@ -96,6 +95,20 @@ const Signup = () => {
                     id='passwrod'
                     type="password" 
                     {...register('password', {
+                        required: '* this is required filed'
+                    })} 
+                    placeholder="Password"
+                    />
+                </Input>
+
+                <Input mb={47}>
+                    {!!formState.errors.password2 && 
+                    <p>{formState.errors.password2.message}</p>
+                    }
+                    <input
+                    id='passwrod2'
+                    type="password" 
+                    {...register('password2', {
                         required: '* this is required filed'
                     })} 
                     placeholder="Password"
