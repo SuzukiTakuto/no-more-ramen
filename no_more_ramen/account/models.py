@@ -96,7 +96,8 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     sex = models.CharField(
         _("sex"),
-        default="male"
+        default="male",
+        max_length=10
     )
 
     icon_id = models.IntegerField(

@@ -12,10 +12,8 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 
 from pathlib import Path
 from datetime import timedelta
-import os
-import dj_database_url
 
-
+DEBUG = True
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -26,7 +24,6 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-y$u^0n(ri%lhf5g2h$5*aw!0rnr)=2#zr-z++)ynv*n6i5qp6^'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
 
 AUTH_USER_MODEL = 'account.User'
 
@@ -41,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'rest_framework_simplejwt',
+    'rest_framework_simplejwt.token_blacklist',
     'corsheaders',
     'account'
 ]
@@ -164,31 +162,20 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # メールのホスト情報
 DEFAULT_FROM_EMAIL = "nikkii.official126@gmail.com"
-EMAIL_HOST = 'smtp.googlemail.com'
+EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_HOST_USER = 'nikkii.official126@gmail.com'
-EMAIL_HOST_PASSWORD = 'shibaura20xx'
+EMAIL_HOST_PASSWORD = 'retjgevawkvyjlbs'
 EMAIL_USE_TLS = True
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
-LOGGING = {
-    'version': 1,
-    'disable_existing_loggers': False,
-    'handlers': {
-        'console': {
-            'class': 'logging.StreamHandler',
-        },
-    },
-    'loggers': {
-        'django': {
-            'handlers': ['console'],
-            'level': os.getenv('DJANGO_LOG_LEVEL', 'DEBUG'),
-        },
-    },
-}
-PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
-db_from_env = dj_database_url.config()
 DATABASES = {
-    'default': dj_database_url.config()
+  'default': {
+    'ENGINE': 'django.db.backends.mysql',
+    'NAME': 'no_more_ramen_db',
+    'USER': 'no_more_ramen_developer',
+    'PASSWORD': 'yxUJTtR3gYmJ',
+    'HOST': 'db',
+    'PORT': '3308',
+  }
 }
-ALLOWED_HOSTS = ['localhost']
