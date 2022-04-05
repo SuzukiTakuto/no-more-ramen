@@ -39,6 +39,7 @@ const Signup = () => {
         return res.json();
     }).then((data) => {
         //window.location.href = "http://localhost:3000/login";
+        console.log(data);
         history.push(`/semd_email`);
     }).catch(()=>{
         console.log("error");
