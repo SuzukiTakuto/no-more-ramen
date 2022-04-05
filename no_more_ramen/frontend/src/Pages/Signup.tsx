@@ -37,7 +37,7 @@ const Signup = () => {
         body: JSON.stringify(values)
     }).then((res) => {
         return res.json();
-    }).then(() => {
+    }).then((data) => {
         //window.location.href = "http://localhost:3000/login";
         history.push(`/login`);
     }).catch(()=>{
