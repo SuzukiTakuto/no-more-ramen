@@ -9,4 +9,10 @@ export type SignupUser = {
     email: string,
     password: string,
     password2: string,
+    sex: string
+}
+
+export type UpdataUser = {
+    username: string,
+    sex: string,
 }

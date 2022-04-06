@@ -1,131 +1,112 @@
 import React, { useState } from 'react';
-import { useForm, SubmitHandler, SubmitErrorHandler } from 'react-hook-form';
-import { User, SignupUser } from '../type/type';
-import { useHistory } from 'react-router-dom';
-import { apiUrl } from '../utils';
 import styled from 'styled-components';
-import { Button, Message, Form, Input } from '../components/components';
-import { ReactComponent as Noodle } from '../icons/noodle.svg';
-import { NoodleIcon } from '../components/components';
+import Noodle_small from '../icons/Noodle_small';
+import Back from '../icons/Back';
+import { useForm, SubmitHandler, SubmitErrorHandler } from 'react-hook-form';
+import { apiUrl } from '../utils';
+import { Input, Button } from '../components/components';
+import { UpdataUser } from '../type/type';
 import { MaleIcon, FamaleIcon, OtherIcon } from '../components/components';
+import { useHistory } from 'react-router-dom';
 
-const Signup = () => {
+type Props = {
+    setHeight: React.Dispatch<React.SetStateAction<string>>
+}
+
+const Setting = (props: Props) => {
   const history = useHistory();
+
+  props.setHeight("667px");
   const [ sex, setSex] = useState("");
   const [ male, setMale ] = useState(false);
   const [ famale, setFamale ] = useState(false);
   const [ other, setOther ] = useState(false);
-  console.log(male);
 
-  const { register, watch, handleSubmit, formState } = useForm<SignupUser>({
-  mode: 'onSubmit',
+  const { register, watch, handleSubmit, formState } = useForm<UpdataUser>({
+    mode: 'onSubmit',
     reValidateMode: 'onChange',
-      defaultValues: {
+    defaultValues: {
         username: '',
-        email: '',
-        password: '',
-        password2: '',
-        sex: '',
+        sex: ''
     }
   });
 
-  const handleOnSubmit: SubmitHandler<SignupUser> = async (values) => {
+  const handleOnSubmit: SubmitHandler<UpdataUser> = async (values) => {
     values.sex = sex;
     console.log(values);
 
-    return fetch (`${apiUrl}/account/create/`, {
+    return fetch (`${apiUrl}/api/token/`, {
         method: 'POST',
         mode: 'cors',
         cache: 'no-cache',
         credentials: 'same-origin',
         headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
         },
         redirect: 'follow',
-        body: JSON.stringify(values)
+        body: JSON.stringify(values),
     }).then((res) => {
         return res.json();
     }).then((data) => {
-        //window.location.href = "http://localhost:3000/login";
-        console.log(data);
-        history.push(`/semd_email`);
+        localStorage.setItem("token", data.token)
+        console.log(data.token);
     }).catch(()=>{
         console.log("error");
     });
   }
 
-  const handleOnError: SubmitErrorHandler<User> = (errors) => {
+  const handleOnError: SubmitErrorHandler<UpdataUser> = (errors) => {
     console.log(errors)
   }
 
+  const logout = () => {
+      fetch(`${apiUrl}/account/logout/`, {
+        method: 'GET',
+        headers: {
+            'Authorization': 'Bearer ' + localStorage.getItem("token"),
+            'Content-Type': 'application/json',
+          },
+      }).then((res) => {
+        return res.json();
+      }).then((data) => {
+          if (data.status === "205") history.push("/usersetup");
+      }).catch(() => {
+          console.log("error");
+      });
+  }
+
+  const back = () => {
+      history.push("/top");
+  }
+
   return (
-    <>
+    <div>
+        <BackIcon onClick={() => back()}>
+            <Back />
+        </BackIcon>
         <NoodleIcon>
-            <Noodle />
+            <Noodle_small />
         </NoodleIcon>
-        <Message>ユーザーネーム、メールと<br/>パスワードを入力して登録できます。</Message>
 
-        <Form login={false}>
+
+        <UpdataForm>
             <form onSubmit={handleSubmit(handleOnSubmit, handleOnError)} >
-
                 <Input>
                     {!!formState.errors.username && 
                     <p>{formState.errors.username.message}</p>
                     }
                     <input
-                    id='name'
+                    id='username'
                     type="text" 
                     {...register('username', {
                         required: '* this is required filed'
                     })} 
-                    placeholder="Username"
+                    placeholder="ユーザー名変更"
                     />
                 </Input>
                 
-                <Input>
-                    {!!formState.errors.email && 
-                    <p>{formState.errors.email.message}</p>
-                    }
-                    <input
-                    id='email'
-                    type="email" 
-                    {...register('email', {
-                        required: '* this is required filed'
-                    })} 
-                    placeholder="Example@gmail.com"
-                    />
-                </Input>
-                
-                <Input>
-                    {!!formState.errors.password && 
-                    <p>{formState.errors.password.message}</p>
-                    }
-                    <input
-                    id='passwrod'
-                    type="password" 
-                    {...register('password', {
-                        required: '* this is required filed'
-                    })} 
-                    placeholder="Password"
-                    />
-                </Input>
-
-                <Input>
-                    {!!formState.errors.password2 && 
-                    <p>{formState.errors.password2.message}</p>
-                    }
-                    <input
-                    id='passwrod2'
-                    type="password" 
-                    {...register('password2', {
-                        required: '* this is required filed'
-                    })} 
-                    placeholder="Password"
-                    />
-                </Input>
-
                 <Sex>
-                    <SexInput>性別</SexInput>
+                    <SexInput>性別変更</SexInput>
                     <MaleIcon select={male}>
                         <div onClick={() => {
                             setSex("male");
@@ -163,18 +144,36 @@ const Signup = () => {
                         </div>
                     </FamaleIcon>
                 </Sex>
-                
-                
 
                 <Button bgColor={"#2BAD62"} color={"#fff"} stroke={"none"} type="submit" disabled={!formState.isDirty || formState.isSubmitting}>
-                    確認
+                変更する
                 </Button>
             </form>
-        </Form>
-        
-    </>
+        </UpdataForm>
+        <Button onClick={() => logout()} bgColor={"#fff"} color={"#2BAD62"} stroke={"1px solid #2BAD62"}>ログアウト</Button>
+    </div>
   )
 }
+
+const BackIcon = styled.button`
+    position: absolute;
+    top: 44.7px;
+    left: 29.5px;
+    border: none;
+    background-color: #fff;
+    cursor: pointer;
+`;
+
+const NoodleIcon = styled.div`
+    width: 49px;
+    height: 49.55px;
+    margin: 0 auto;
+`;
+
+const UpdataForm = styled.div`
+    width: 280px;
+    margin: 80px auto 162px;
+`;
 
 const Sex = styled.div`
     display: flex;
@@ -190,8 +189,7 @@ const SexInput = styled.div`
     border-radius: 10px;
     text-align: center;
     line-height: 35px;
+    color: #8C8C8C;
 `;
 
-
-
-export default Signup
+export default Setting

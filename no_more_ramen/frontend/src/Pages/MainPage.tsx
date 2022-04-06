@@ -8,6 +8,8 @@ import Parameters from '../components/Parameters'
 import Footer from '../components/Footer';
 import Calender from '../components/Calender';
 import Arrow from '../icons/Arrow';
+import SettingIcon from '../icons/SettingIcon';
+import { useHistory } from 'react-router-dom';
 
 type User = {
     index: number;
@@ -34,6 +36,7 @@ type Props = {
 }
 
 const MainPage = (props: Props) => {
+  const history = useHistory();
   props.setHeight("auto");
   const [userData, setUserdata] = useState<User>({
     index: 0,
@@ -47,13 +50,16 @@ const MainPage = (props: Props) => {
 
   const [oneMoreText, setOneMoreText] = useState('一杯食べた?');
   const [isCalender, setIsCalender] = useState(false);
-  console.log(isCalender);
+  
+  const onClick = () => {
+    history.push("/setting");
+  }
   
   /*useEffect(() => {
       fetch(`${apiUrl}/`, {
         method: 'GET',
         headers: {
-          'Authorization': 'Bearer ' +,
+          'Authorization': 'Bearer ' + localStorage.getItem("token"),
           'Content-Type': 'application/json',
         },
       }).then((res) => {
@@ -80,6 +86,9 @@ const MainPage = (props: Props) => {
 
   return (
     <div>
+        <Setting>
+          <SettingIcon color={colorState[nowColor]} onClick={onClick} />
+        </Setting>
         <NoodleIcon>
             <Noodle />
         </NoodleIcon>
@@ -114,6 +123,13 @@ const Comment = styled.h2`
     font-size: 24px;
     padding-top: 8px;
     font-weight: 600;
+`;
+
+const Setting = styled.div`
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  cursor: pointer;
 `;
 
 
