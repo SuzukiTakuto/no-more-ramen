@@ -9,9 +9,10 @@ import SendMail from './Pages/SendMail';
 import Complete from './Pages/Complete';
 import styled,{ createGlobalStyle } from 'styled-components';
 import reset from 'styled-reset';
+import Setting from './Pages/Setting';
 
 function App() {
-  const [height, setHeight] = useState("667px")
+  const [height, setHeight] = useState("667px");
 
   return (
     <>
@@ -27,6 +28,9 @@ function App() {
             </Route>
             <Route path={"/menu"}>
 
+            </Route>
+            <Route path={"/setting"}>
+              <Setting setHeight={setHeight} />
             </Route>
             <Route path={"/login"}>
               <Login />
@@ -64,6 +68,7 @@ const MainWrapper = styled.div<{height: string}>`
   color: #4B4B4B;
   padding-top: 68px;
   box-sizing: border-box;
+  position: relative;
 `;
 
 export default App;
