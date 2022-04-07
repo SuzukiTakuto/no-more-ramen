@@ -33,7 +33,7 @@ const MainPage = (props: Props) => {
   const history = useHistory();
   props.setHeight("auto");
   const [userParamData, setUserParamData] = useState<UserParam>({
-    index: 17000,
+    index: 0,
     run: 0,
     walk: 0,
     days: 0,
