@@ -94,6 +94,7 @@ const Setting = (props: Props) => {
         redirect: 'follow',
         body: JSON.stringify(values),
     }).then((res) => {
+        console.log(res);
         return res.json();
     }).then((data) => {
         console.log(data);
