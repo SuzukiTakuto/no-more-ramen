@@ -11,6 +11,7 @@ import styled,{ createGlobalStyle } from 'styled-components';
 import reset from 'styled-reset';
 import Setting from './Pages/Setting';
 import RamenRecord from './Pages/RamenRecord';
+import Ranking from './Pages/Ranking';
 
 function App() {
   const [height, setHeight] = useState("667px");
@@ -43,10 +44,13 @@ function App() {
               <SendMail />
             </Route>
             <Route path={"/account/create/complete/:token"}>
-              <Complete />
+              < Complete setHeight={setHeight} />
             </Route>
             <Route path={"/ramen_record"}>
               <RamenRecord setHeight={setHeight} />
+            </Route>
+            <Route path={"/ranking"}>
+              <Ranking setHeight={setHeight} />
             </Route>
           </Switch>
         </BrowserRouter>

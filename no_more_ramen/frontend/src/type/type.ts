@@ -15,6 +15,7 @@ export type SignupUser = {
 export type UpdataUser = {
     username: string,
     sex: string,
+    userIcon: string,
     mail_delivery: boolean
 }
 

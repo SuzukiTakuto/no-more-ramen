@@ -8,6 +8,9 @@ import { Input, Button, BackIcon } from '../components/components';
 import { UpdataUser } from '../type/type';
 import { MaleIcon, FamaleIcon, OtherIcon } from '../components/components';
 import { useHistory, useParams } from 'react-router-dom';
+import Icon1 from '../icons/Icon1'
+import Icon2 from '../icons/Icon2'
+import Icon3 from '../icons/Icon3'
 
 type Props = {
     setHeight: React.Dispatch<React.SetStateAction<string>>
@@ -43,6 +46,7 @@ const Setting = (props: Props) => {
   const [ male, setMale ] = useState(false);
   const [ female, setFemale ] = useState(false);
   const [ other, setOther ] = useState(false);
+  const [ userIcon, setUserIcon ] = useState("0");
   const [ mailDeliver, setMailDeliver ] = useState(true);
 
   const { register, watch, handleSubmit, formState } = useForm<UpdataUser>({
@@ -50,13 +54,16 @@ const Setting = (props: Props) => {
     reValidateMode: 'onChange',
     defaultValues: {
         username: '',
-        sex: ''
+        sex: '',
+        userIcon: '',
+        mail_delivery: true,
     }
   });
 
   const handleOnSubmit: SubmitHandler<UpdataUser> = async (values) => {
     values.sex = sex;
     values.mail_delivery = mailDeliver;
+    values.userIcon = userIcon;
     console.log(values);
 
     return fetch (`${apiUrl}/account/update/`, {
@@ -74,6 +81,7 @@ const Setting = (props: Props) => {
         return res.json();
     }).then((data) => {
         console.log(data);
+        history.push("/top");
     }).catch(()=>{
         console.log("error");
     });
@@ -169,6 +177,14 @@ const Setting = (props: Props) => {
                     </FamaleIcon>
                 </Sex>
 
+                <UserIcon>
+                    <InputTitle color={color}>アイコン</InputTitle>
+                    <Icon1 color={color} userIcon={userIcon} setUserIcon={setUserIcon} />
+                    <Icon2 color={color} userIcon={userIcon} setUserIcon={setUserIcon} />
+                    <Icon3 color={color} userIcon={userIcon} setUserIcon={setUserIcon} />
+
+                </UserIcon>
+
                 <MailDeliver>
                     <InputTitle color={color}>メール配信</InputTitle>
                     <MailDeliverSwitchYes color={color} mailDeliver={mailDeliver} onClick={(e: React.MouseEvent<HTMLElement, MouseEvent>) => {
@@ -250,5 +266,10 @@ const MailDeliverSwitchNo = styled.button<{mailDeliver: boolean, color: string}>
     border-radius: 16px;
 `;
 
+const UserIcon = styled.div`
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+`;
 
 export default Setting
