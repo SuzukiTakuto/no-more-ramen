@@ -141,9 +141,9 @@ const Setting = (props: Props) => {
         <NoodleIcon>
             <Noodle_small />
         </NoodleIcon>
-        
+
         {isSet ? <Message>設定が完了しました</Message> : null}
-        
+
         <UpdataForm>
             <form onSubmit={handleSubmit(handleOnSubmit, handleOnError)} >
                 <Sex>

@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth import get_user_model
 from django.utils.translation import gettext_lazy as _
+from django.utils import timezone
 
 User = get_user_model()
 
@@ -22,7 +23,7 @@ class RamenRecord(models.Model):
 
     date_time = models.DateTimeField(
         _("time ate"),
-        auto_now_add=True
+        default=timezone.now()
     )
 
     calorie = models.IntegerField(_("Estimated Calories in Ramen"))

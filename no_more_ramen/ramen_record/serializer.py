@@ -35,18 +35,17 @@ class CreateRamenRecordSerializer(serializers.ModelSerializer):
         owner = self.context.get("user")
         calorie = Calorie.calculate(validated_data)
         date_format = "%Y/%m/%d/%H:%M"
-        print(validated_data["date_time"])
         if validated_data["date_time"] == '':
-            validated_data["date_time"] = timezone.now()
+            date_time = timezone.now()
         else:
-            validated_data["date_time"] = timezone.datetime.strptime(validated_data["date_time"], date_format)
+            date_time = timezone.datetime.strptime(validated_data["date_time"], date_format)
 
         ramen = RamenRecord(
             owner=owner,
             type=validated_data["type"],
             volume=validated_data["volume"],
             rice=validated_data["rice"],
-            date_time=validated_data["date_time"],
+            date_time=date_time,
             calorie=calorie
         )
         ramen.save()

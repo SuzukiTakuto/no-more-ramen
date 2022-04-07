@@ -80,8 +80,7 @@ class User(AbstractBaseUser, PermissionsMixin):
         validators=[username_validator],
         error_messages={
             'unique': _("A user with that username already exists."),
-        },
-        primary_key=True
+        }
     )
 
     email = models.EmailField(
@@ -89,6 +88,7 @@ class User(AbstractBaseUser, PermissionsMixin):
         help_text='この項目は必須です。メールアドレスは公開されません。',
         blank=False,
         unique=True,
+        primary_key=True,
         error_messages={
             'unique': _("This email address is already in use."),
         }

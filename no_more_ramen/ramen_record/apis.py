@@ -1,18 +1,15 @@
 import datetime
+
 from dateutil.relativedelta import relativedelta
-import pytz
-
 from django.contrib.auth import get_user_model
-from django.db.models import Sum
 from django.db import transaction
-from django.utils import timezone
-
+from django.db.models import Sum
 from rest_framework import views, status, generics
 from rest_framework.permissions import IsAuthenticated, AllowAny
-
-from .serializer import CreateRamenRecordSerializer
-from .models import RamenRecord
 from rest_framework.response import Response
+
+from .models import RamenRecord
+from .serializer import CreateRamenRecordSerializer
 
 User = get_user_model()
 
@@ -63,7 +60,6 @@ class RamenCalenderView(views.APIView):
             ramen_date_list = [ramen["date_time"].date() for ramen in RamenRecord.objects.filter(owner=request.user, date_time__range=[calender_max_range, now]).values("date_time")]
         else:
             ramen_date_list = []
-
         ramen_calender = [[date in ramen_date_list for date in week] for week in calender_date_matrix]
         context = {"status": 200}
         for i, ramen_week in enumerate(ramen_calender):
@@ -84,7 +80,6 @@ class CreateRamenRecordView(generics.CreateAPIView):
             serializer.errors["status"] = 400
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         ramen_object = serializer.save()
-        print(ramen_object)
 
         return Response({"status": 201, "ramen_record_id": ramen_object.pk}, status=status.HTTP_201_CREATED)
 

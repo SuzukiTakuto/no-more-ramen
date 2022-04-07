@@ -1,18 +1,14 @@
-【nikkii 仮登録完了のお知らせ】
+【No More Ramen {{last_month}}月のレポート】
 
 {{ username }} 様
 
-nikkiiの仮登録が完了しました。
-
-下記のメールアドレス確認リンクを
-クリックして登録を完了してください。
-
-{{ protocol}}://{{ domain }}{% url 'account:create_user_complete' token %}
+{{last_month}}月のトータルカロリー: {{total_calorie}}
+ラーメンを食べた回数: {{ramen_count}}
+{{comment}}
 
 
 ゜。゜。゜。゜。゜。゜。゜。゜。゜。゜。゜。゜。゜。゜。゜。
 
-　nikkii 運営管理チーム
-　nikkii.official126@gmail.com
+　No More Ramen 運営管理チーム
 
 ゜。゜。゜。゜。゜。゜。゜。゜。゜。゜。゜。゜。゜。゜。゜。

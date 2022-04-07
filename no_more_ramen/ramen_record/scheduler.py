@@ -15,15 +15,25 @@ def send_report():
     now = datetime.now()
     first_date_last_month = datetime.combine(now.date() - timedelta(days=1) + relativedelta(days=1), time())
     for user in target_users:
-        if RamenRecord.objects.filter(owner=user, date_time__range=[first_date_last_month, now]).exists():
-            last_month_ramen_point = RamenRecord.objects.filter(owner=user,
+        ramen_count = RamenRecord.objects.filter(owner=user, date_time__range=[first_date_last_month, now]).count()
+        if ramen_count != 0:
+            total_calorie = RamenRecord.objects.filter(owner=user,
                                                                 date_time__range=[first_date_last_month, now]).aggregate(
-                Sum("calorie"))
+                Sum("calorie")).get("calorie__sum")
         else:
-            last_month_ramen_point = 0
+            total_calorie = 0
+        if total_calorie < 6000:
+            comment = "野菜も食べて健康を維持しましょう！"
+        elif total_calorie < 15000:
+            comment = "少し食べすぎしれません。適度な運動をしましょう！"
+        else:
+            comment = "食べすぎです！ラーメンの頻度を減らしてください！"
         context = {
+            'last_month': first_date_last_month.month,
             'username': user.username,
-            'last_month_ramen_point': last_month_ramen_point
+            'total_calorie': total_calorie,
+            'ramen_count': ramen_count,
+            'comment': comment
         }
 
         subject = render_to_string('ramen_report/subject.txt', context)

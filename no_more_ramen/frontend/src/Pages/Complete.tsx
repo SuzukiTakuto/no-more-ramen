@@ -28,6 +28,7 @@ const Complete = (props: Props) => {
       }).then((res) => {
           return res.json();
       }).then((data) => {
+          console.log(data);
         console.log(data.access)
         localStorage.setItem("token", data.access);
       }).catch(() => {
