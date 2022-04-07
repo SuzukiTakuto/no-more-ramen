@@ -10,7 +10,7 @@ services:
       - CHOKIDAR_USEPOLLING=true
     volumes:
       - ./:/usr/src/frontend
-    command: sh -c "cd frontend && yarn install && yarn start"
+    command: sh -c "cd frontend && yarn start"
     ports:
       - "3000:3000"
 

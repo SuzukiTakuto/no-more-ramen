@@ -86,9 +86,10 @@ class LogoutView(views.APIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, request):
-        token = RefreshToken.for_user(request.user)
+        refresh_token = request.data.get("access_token")
+        token = RefreshToken(refresh_token)
         token.blacklist()
-        return Response({"status": 205, "username": request.user.username}, status=status.HTTP_205_RESET_CONTENT)
+        return Response(data={"status": 205, "username": request.user.username}, status=status.HTTP_205_RESET_CONTENT)
 
 
 class UserInformationView(views.APIView):
