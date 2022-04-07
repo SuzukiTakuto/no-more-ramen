@@ -33,7 +33,7 @@ const MainPage = (props: Props) => {
   const history = useHistory();
   props.setHeight("auto");
   const [userParamData, setUserParamData] = useState<UserParam>({
-    index: 0,
+    index: 17000,
     run: 0,
     walk: 0,
     days: 0,
@@ -114,21 +114,39 @@ const MainPage = (props: Props) => {
   }, []);
 
   useEffect(() => {
-      if (userParamData.index > 6000) {
+    if (userParamData.index >= 15000) {
+      setNowColor("danger");
+      setComment("ヤバみ");
+    }  
+    if (userParamData.index >= 6000 && userParamData.index < 15000) {
             setNowColor("omg");
             setComment("気持ち多め");
             console.log(comment);
       }
-      else if (userParamData.index > 15000) {
-            setNowColor("danger");
-            setComment("ヤバみ");
-      }
-      else {
+    if (userParamData.index < 6000) {
         setNowColor("health");
         setComment("けんこう");
       }
         
-  }, [userParamData])
+  }, [userParamData]);
+
+  const [point, setPoint] = useState(0);
+
+  
+  /*let displayPoint = 0;
+  useEffect(() => {
+    console.log(userParamData.index);
+    let countId = setInterval(() => {
+      if (displayPoint < userParamData.index) {
+        displayPoint = displayPoint + 1;
+        console.log(displayPoint);
+        console.log(point);
+        setPoint(displayPoint);
+      } else {
+        clearInterval(countId);
+      }
+    }, 0.001);
+  }, []);*/
 
   return (
     <div>
