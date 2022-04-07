@@ -1,11 +1,15 @@
 import React from 'react';
 import styled from 'styled-components';
+import {CalenderType} from '../type/type';
 
 type Props = {
   color: string,
+  calender: CalenderType
 }
 
 const Calender = (props: Props) => {
+  const weekSet = ["日", "月", "火", "水", "木", "金", "土"];
+
   return (
     <CalenderContainer>
         <Text>食べた分のカロリーを60kgの男性がウォーキング
@@ -20,6 +24,9 @@ const Calender = (props: Props) => {
             <CalenderTd>日</CalenderTd>
             <CalenderTd>日</CalenderTd>
             <CalenderTd>日</CalenderTd>
+            {props.calender.week1.map((day) => (
+              
+            ))}
           </CalenderTr>
           <CalenderTr>
             <CalenderTh>2nd</CalenderTh>
@@ -94,10 +101,6 @@ const CalenderTh = styled.th`
   font-family: "Noto Sans";
   text-align: left;
 `;
-
-type CalenderTdProps = {
-  color: string
-}
 
 const CalenderTd = styled.td`
   width: 24px;

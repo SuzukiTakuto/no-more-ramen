@@ -59,7 +59,7 @@ const Setting = (props: Props) => {
     values.mail_delivery = mailDeliver;
     console.log(values);
 
-    return fetch (`${apiUrl}/api/token/`, {
+    return fetch (`${apiUrl}/account/update/`, {
         method: 'POST',
         mode: 'cors',
         cache: 'no-cache',
@@ -73,8 +73,7 @@ const Setting = (props: Props) => {
     }).then((res) => {
         return res.json();
     }).then((data) => {
-        localStorage.setItem("token", data.token)
-        console.log(data.token);
+        console.log(data);
     }).catch(()=>{
         console.log("error");
     });

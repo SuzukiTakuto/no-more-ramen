@@ -40,3 +40,11 @@ export type UserParam = {
     walk: number;
     days: number;
 };
+
+export type CalenderType = {
+    week1: boolean[]
+    week2: boolean[]
+    week3: boolean[]
+    week4: boolean[]
+    week5: boolean[]
+}
