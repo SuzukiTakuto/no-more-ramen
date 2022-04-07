@@ -30,7 +30,7 @@ function App() {
             <Route path={"/menu"}>
 
             </Route>
-            <Route path={"/setting"}>
+            <Route path={"/setting/:state"}>
               <Setting setHeight={setHeight} />
             </Route>
             <Route path={"/login"}>

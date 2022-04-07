@@ -33,12 +33,12 @@ export const Form = styled.div<{login?: boolean}>`
     padding-bottom: 141.117px;
 `;
 
-export const Input = styled.div<{mb?: number}>`
+export const Input = styled.div<{mb?: number, color?: string}>`
     margin: 10px 0 ;
     > input {
         width: 100%;
         height: 35px;
-        border: 1px solid #2BAD62;
+        border: 1px solid ${({color}) => color ? color : "#2BAD62"};
         border-radius: 10px;
         padding-left: 10px;
         margin: 5px 0 ${ ({ mb }) => mb ? mb : 0 }px;

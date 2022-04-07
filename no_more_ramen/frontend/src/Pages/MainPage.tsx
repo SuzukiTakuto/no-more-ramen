@@ -46,7 +46,7 @@ const MainPage = (props: Props) => {
   const [isCalender, setIsCalender] = useState(false);
   
   const onClick = () => {
-    history.push("/setting");
+    history.push(`/setting/${nowColor}`);
   }
   
   useEffect(() => {

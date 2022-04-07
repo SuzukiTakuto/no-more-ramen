@@ -30,10 +30,11 @@ const Complete = () => {
 
   return (
     <CompleteContainer>
-        <CompleteNoodleIcon>
+        <CompleteNoodleIcon rotate={true}>
             <CompleteNoodle />
         </CompleteNoodleIcon>
-        <Message>登録完了</Message>
+        <Message>登録完了が完了しました！<br/>早速始めてみましょう。</Message>
+        <Button bgColor={"#2BAD62"} color={"#fff"} stroke={"none"} mt={"95px auto;"}>始める</Button>
     </CompleteContainer>
   )
 }
@@ -42,10 +43,15 @@ const CompleteContainer = styled.div`
 
 `;
 
-const CompleteNoodleIcon = styled.div`
+type IconProps = {
+  rotate: boolean;
+}
+
+const CompleteNoodleIcon = styled.div<{rotate: boolean}>`
     width: 101.36px;
     height: 162.16px;
-    margin: 0 auto 25.3px;;
+    margin: 0 auto 25.3px;
+    ${({rotate}) => rotate ? "transform: rotate(180deg)" : "transform: rotate(0deg)"};
 `;
 
 export default Complete
