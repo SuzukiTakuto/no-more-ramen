@@ -124,8 +124,8 @@ const Setting = (props: Props) => {
               localStorage.removeItem("token");
               history.push("/usersetup");
           }
-      }).catch(() => {
-          console.log("error");
+      }).catch((err: Error) => {
+          console.log(err);
       });
   }
 
