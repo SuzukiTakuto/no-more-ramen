@@ -145,7 +145,7 @@ const MainPage = (props: Props) => {
       } else {
         clearInterval(countId);
       }
-    }, 0.001);
+    }, 0.1);
   }, []);*/
 
   return (
