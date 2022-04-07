@@ -15,9 +15,9 @@ def send_report():
     now = datetime.now()
     first_date_last_month = datetime.combine(now.date() - timedelta(days=1) + relativedelta(days=1), time())
     for user in target_users:
-        if RamenRecord.objects.filter(owner=user, datetime__range=[first_date_last_month, now]).exists():
+        if RamenRecord.objects.filter(owner=user, date_time__range=[first_date_last_month, now]).exists():
             last_month_ramen_point = RamenRecord.objects.filter(owner=user,
-                                                                datetime__range=[first_date_last_month, now]).aggregate(
+                                                                date_time__range=[first_date_last_month, now]).aggregate(
                 Sum("calorie"))
         else:
             last_month_ramen_point = 0

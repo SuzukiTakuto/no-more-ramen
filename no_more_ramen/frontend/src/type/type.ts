@@ -31,7 +31,7 @@ export type RamenData = {
     type: string,
     volume: string,
     rice: boolean,
-    time: string,
+    date_time: string,
 }
 
 export type UserParam = {

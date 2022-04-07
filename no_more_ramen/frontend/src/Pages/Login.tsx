@@ -26,7 +26,7 @@ const Login = () => {
   const handleOnSubmit: SubmitHandler<LoginUser> = async (values) => {
     console.log(values);
 
-    return fetch (`${apiUrl}/api/token/`, {
+    return fetch (`${apiUrl}/account/login/`, {
         method: 'POST',
         mode: 'cors',
         cache: 'no-cache',
@@ -39,8 +39,8 @@ const Login = () => {
     }).then((res) => {
         return res.json();
     }).then((data) => {
-        localStorage.setItem("token", data.token)
-        console.log(data.token)
+        localStorage.setItem("token", data.access)
+        console.log(data.access)
         history.push(`/top`);
     }).catch(()=>{
         console.log("error");

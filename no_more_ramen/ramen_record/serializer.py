@@ -1,4 +1,5 @@
 from rest_framework import serializers
+from django.utils import timezone
 
 from .models import RamenRecord
 
@@ -22,14 +23,19 @@ class CreateRamenRecordSerializer(serializers.ModelSerializer):
     type = serializers.ChoiceField(["Miso", "Shio", "Shoyu", "Tonkotsu", "Jiro", "AburaSoba", "IeKei", "Tsukemen"], required=True)
     volume = serializers.ChoiceField(["large", "medium", "small"], required=True)
     rice = serializers.BooleanField(required=True)
-    date_time = serializers.DateTimeField(required=True)
+    date_time = serializers.CharField()
 
     class Meta:
         model = RamenRecord
-        exclude = ["owner", "calorie"]
+        exclude = ["owner", "calorie", "date_time"]
 
     def create(self, validated_data):
         calorie = Calorie.calculate(validated_data.data)
+        date_format = "%Y/%m/%d/%H:%M"
+        if validated_data.data["date_time"] == '':
+            validated_data.data["date_time"] = timezone.now()
+        else:
+            validated_data.data["date_time"] = timezone.datetime.strptime(validated_data.data["date_time"], date_format)
 
         ramen = RamenRecord(
             owner=validated_data.data["owner"],

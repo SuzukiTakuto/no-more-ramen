@@ -6,7 +6,7 @@ from django.db.models import Sum
 from django.db import transaction
 
 from rest_framework import views, status, generics
-from rest_framework.permissions import IsAuthenticated, AllowAny
+from rest_framework.permissions import IsAuthenticated
 
 from .serializer import CreateRamenRecordSerializer
 from .models import RamenRecord
@@ -34,8 +34,8 @@ class UserParameterView(views.APIView):
 
     def get(self, request):
         one_month = datetime.datetime.now() - datetime.timedelta(days=30)
-        if RamenRecord.objects.filter(owner=request.user, datetime__range=[one_month, datetime.datetime.now()]).exists():
-            month_calorie = RamenRecord.objects.filter(owner=request.user, datetime__range=[one_month, datetime.datetime.now()]).aggregate(Sum("calorie"))
+        if RamenRecord.objects.filter(owner=request.user, date_time__range=[one_month, datetime.datetime.now()]).exists():
+            month_calorie = RamenRecord.objects.filter(owner=request.user, date_time__range=[one_month, datetime.datetime.now()]).aggregate(Sum("calorie"))
         else:
             month_calorie = 0
 
@@ -56,8 +56,8 @@ class RamenCalenderView(views.APIView):
         calender_date_matrix = [[first_date_this_week + datetime.timedelta(days=i) - datetime.timedelta(days=7*j) for i in range(7)] for j in range(5)]
 
         calender_max_range = datetime.datetime.now() - datetime.timedelta(days=35)
-        if RamenRecord.objects.filter(owner=request.user, datetime__range=[calender_max_range, datetime.datetime.now()]).exists():
-            ramen_date_list = [ramen["date_time"].date() for ramen in RamenRecord.objects.filter(owner=request.user, datetime__range=[calender_max_range, datetime.datetime.now()]).values("date_time")]
+        if RamenRecord.objects.filter(owner=request.user, date_time__range=[calender_max_range, datetime.datetime.now()]).exists():
+            ramen_date_list = [ramen["date_time"].date() for ramen in RamenRecord.objects.filter(owner=request.user, date_time__range=[calender_max_range, datetime.datetime.now()]).values("date_time")]
         else:
             ramen_date_list = []
 

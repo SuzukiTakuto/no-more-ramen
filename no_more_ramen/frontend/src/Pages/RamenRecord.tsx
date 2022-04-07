@@ -34,7 +34,7 @@ const RamenRecord = (props: Props) => {
     const [type, setType] = useState('');
     const [volume, setVolume] = useState('');
     const [rice, setRice] = useState(false);
-    const [time, setTime] = useState<TimeSet>({
+    const [date_time, setTime] = useState<TimeSet>({
         yy: '',
         mm: '',
         dd: '',
@@ -46,7 +46,7 @@ const RamenRecord = (props: Props) => {
         type: '',
         volume: '',
         rice: false,
-        time: '',
+        date_time: '',
     });
 
     //ラーメンの種類
@@ -120,8 +120,8 @@ const RamenRecord = (props: Props) => {
     }, [rice]);
     useEffect(() => {
         console.log(type);
-        setData({...data, time: `${time.yy}/${time.mm}/${time.dd}/${time.hour}:${time.min}`});
-    }, [time]);
+        setData({...data, date_time: `${date_time.yy}/${date_time.mm}/${date_time.dd}/${date_time.hour}:${date_time.min}`});
+    }, [date_time]);
 
 
     const onClick = (e: React.FormEvent<HTMLFormElement>) => {
@@ -178,14 +178,14 @@ const RamenRecord = (props: Props) => {
                 <QuestionText>食べたのはいつ？</QuestionText>
                 <SelectTime>
                     
-                    <select name="year" id="year" onChange={(e) => setTime({...time, yy: e.target.value})}>
+                    <select name="year" id="year" onChange={(e) => setTime({...date_time, yy: e.target.value})}>
                         <option value="2022">2022</option>
                         <option value="2023">2023</option>
                         <option value="2024">2024</option>
                         <option value="2025">2025</option>
                     </select>
                     <Span>/</Span>
-                    <select name="month" id="month" onChange={(e) => setTime({...time, mm: e.target.value})}>
+                    <select name="month" id="month" onChange={(e) => setTime({...date_time, mm: e.target.value})}>
                         <option value="01">01</option>
                         <option value="02">02</option>
                         <option value="03">03</option>
@@ -200,7 +200,7 @@ const RamenRecord = (props: Props) => {
                         <option value="12">12</option>
                     </select>
                     <Span>/</Span>
-                    <select style={{marginRight: "10px"}} name="day" id="day" onChange={(e) => setTime({...time, dd: e.target.value})}>
+                    <select style={{marginRight: "10px"}} name="day" id="day" onChange={(e) => setTime({...date_time, dd: e.target.value})}>
                         <option value="01">01</option>
                         <option value="02">02</option>
                         <option value="03">03</option>
@@ -232,7 +232,7 @@ const RamenRecord = (props: Props) => {
                         <option value="30">30</option>
                         <option value="31">31</option>
                     </select>
-                    <select name="hour" id="hour" onChange={(e) => setTime({...time, hour: e.target.value})}>
+                    <select name="hour" id="hour" onChange={(e) => setTime({...date_time, hour: e.target.value})}>
                         <option value="00">00</option>
                         <option value="01">01</option>
                         <option value="02">02</option>
@@ -259,7 +259,7 @@ const RamenRecord = (props: Props) => {
                         <option value="24">24</option>
                     </select>
                     <Span>:</Span>
-                    <select name="minute" id="minute" onChange={(e) => setTime({...time, min: e.target.value})}>
+                    <select name="minute" id="minute" onChange={(e) => setTime({...date_time, min: e.target.value})}>
                         <option value="00">00</option>
                         <option value="01">01</option>
                         <option value="02">02</option>

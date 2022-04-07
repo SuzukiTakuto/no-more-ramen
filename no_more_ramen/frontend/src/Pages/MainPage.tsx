@@ -53,13 +53,15 @@ const MainPage = (props: Props) => {
       fetch(`${apiUrl}/account/information/`, {
         method: 'GET',
         headers: {
-          'Authorization': 'Bearer ' + localStorage.getItem("token"),
+          'Authorization': 'JWT ' + localStorage.getItem("token"),
           'Content-Type': 'application/json',
         },
       }).then((res) => {
         return res.json();
       }).then((data) => {
+          console.log(data);
         console.log(data.username);
+        if (data.status !== 200) history.push("login");
       }).catch(() => {
         console.log('error');
       });
@@ -68,12 +70,13 @@ const MainPage = (props: Props) => {
       fetch(`${apiUrl}/ramen_record/parameters/`, {
         method: 'GET',
         headers: {
-          'Authorization': 'Bearer ' + localStorage.getItem("token"),
+          'Authorization': 'JWT ' + localStorage.getItem("token"),
           'Content-Type': 'application/json',
         },
       }).then((res) => {
         return res.json();
       }).then((data) => {
+          console.log(data);
         setUserParamData({
             index: data.ramen_point,
             run: data.metabolism,
@@ -92,9 +95,9 @@ const MainPage = (props: Props) => {
         console.log('error');
       });
 
-      fetch(`${apiUrl}/rament_record/calender/`, {
+      fetch(`${apiUrl}/ramen_record/calender/`, {
         headers: {
-          'Authorization': 'Bearer ' + localStorage.getItem("token"),
+          'Authorization': 'JWT ' + localStorage.getItem("token"),
           'Content-Type': 'application/json',
         },
       }).then((res) => {
