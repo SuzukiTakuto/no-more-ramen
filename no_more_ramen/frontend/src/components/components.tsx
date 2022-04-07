@@ -51,39 +51,39 @@ export const NoodleIcon = styled.div`
     margin: 0 auto 10px;
 `;
 
-export const MaleIcon = styled.div<{select: boolean}>`
+export const MaleIcon = styled.div<{select: boolean, color?: string}>`
     width: 32px;
     height: 32px;
     display: flex;
     justify-content: center;
     align-items: center;
-    ${({select}) => select? (
-        "border-radius: 50%; background-color: #2bad62;"
+    ${({select, color}) => select? (
+        `border-radius: 50%; background-color: ${color};`
     ) : (
         "border-radius: 0; background-color: #fff;"
     )}
 `;
 
-export const FamaleIcon = styled.div<{select: boolean}>`
+export const FamaleIcon = styled.div<{select: boolean, color?: string}>`
     width: 32px;
     height: 32px;
     display: flex;
     justify-content: center;
     align-items: center;
-    ${({select}) => select ? (
-        "border-radius: 50%; background-color: #2bad62;"
+    ${({select, color}) => select ? (
+        `border-radius: 50%; background-color: ${color};`
     ) : (
         "border-radius: 0; background-color: #fff;"
     )}
 `;
-export const OtherIcon = styled.div<{select: boolean}>`
+export const OtherIcon = styled.div<{select: boolean, color?: string}>`
     width: 32px;
     height: 32px;
     display: flex;
     justify-content: center;
     align-items: center;
-    ${({select}) => select ? (
-        "border-radius: 50%; background-color: #2bad62;"
+    ${({select, color}) => select ? (
+        `border-radius: 50%; background-color: ${color};`
     ) : (
         "border-radius: 0; background-color: #fff;"
     )}

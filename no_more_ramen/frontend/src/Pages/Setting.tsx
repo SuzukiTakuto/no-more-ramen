@@ -41,7 +41,7 @@ const Setting = (props: Props) => {
   props.setHeight("667px");
   const [ sex, setSex] = useState("");
   const [ male, setMale ] = useState(false);
-  const [ famale, setFamale ] = useState(false);
+  const [ female, setFemale ] = useState(false);
   const [ other, setOther ] = useState(false);
   const [ mailDeliver, setMailDeliver ] = useState(true);
 
@@ -60,7 +60,7 @@ const Setting = (props: Props) => {
     console.log(values);
 
     return fetch (`${apiUrl}/account/update/`, {
-        method: 'POST',
+        method: 'PUT',
         mode: 'cors',
         cache: 'no-cache',
         credentials: 'same-origin',
@@ -131,11 +131,11 @@ const Setting = (props: Props) => {
                 
                 <Sex>
                     <InputTitle color={color}>性別変更</InputTitle>
-                    <MaleIcon select={male}>
+                    <MaleIcon select={male} color={color}>
                         <div onClick={() => {
                             setSex("male");
                             setMale(true);
-                            setFamale(false);
+                            setFemale(false);
                             setOther(false);
                         }}>
                             <svg xmlns="http://www.w3.org/2000/svg" width="19.996" height="19.997" viewBox="0 0 19.996 19.997">
@@ -143,11 +143,11 @@ const Setting = (props: Props) => {
                             </svg>
                         </div>
                     </MaleIcon>
-                    <OtherIcon select={other}>
+                    <OtherIcon select={other} color={color}>
                         <div onClick={() => {
                             setSex("other");
                             setMale(false);
-                            setFamale(false);
+                            setFemale(false);
                             setOther(true);
                         }}>
                             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="19.997" viewBox="0 0 20 19.997">
@@ -155,15 +155,15 @@ const Setting = (props: Props) => {
                             </svg>
                         </div>
                     </OtherIcon>
-                    <FamaleIcon select={famale}>
+                    <FamaleIcon select={female} color={color}>
                         <div onClick={() => {
-                            setSex("famale");
+                            setSex("female");
                             setMale(false);
-                            setFamale(true);
+                            setFemale(true);
                             setOther(false);
                         }}>
                             <svg xmlns="http://www.w3.org/2000/svg" width="13.466" height="20.205" viewBox="0 0 13.466 20.205">
-                                <path id="gender-female" d="M16.574,17.9a6.733,6.733,0,1,0-1.683,0v1.742H10.683V21.33h4.208V24.7h1.683V21.33h4.208V19.647H16.574Zm-5.891-6.674a5.05,5.05,0,1,1,5.05,5.05,5.05,5.05,0,0,1-5.05-5.05Z" transform="translate(-9 -4.492)" fill={famale ? "#fff" : color}/>
+                                <path id="gender-female" d="M16.574,17.9a6.733,6.733,0,1,0-1.683,0v1.742H10.683V21.33h4.208V24.7h1.683V21.33h4.208V19.647H16.574Zm-5.891-6.674a5.05,5.05,0,1,1,5.05,5.05,5.05,5.05,0,0,1-5.05-5.05Z" transform="translate(-9 -4.492)" fill={female ? "#fff" : color}/>
                             </svg>
                         </div>
                     </FamaleIcon>

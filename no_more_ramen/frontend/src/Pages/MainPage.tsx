@@ -89,9 +89,9 @@ const MainPage = (props: Props) => {
           console.log(data);
         setUserParamData({
             index: data.ramen_point as number,
-            run: data.metabolism,
-            walk: data.walking_cal_per_km,
-            days: data.walking_cal_per_hour,
+            run: data.walking_cal_per_km,
+            walk: data.walking_cal_per_hour,
+            days: data.metabolism,
         });
 
       }).catch(() => {

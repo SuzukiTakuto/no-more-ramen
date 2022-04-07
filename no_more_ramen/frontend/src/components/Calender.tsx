@@ -17,56 +17,33 @@ const Calender = (props: Props) => {
         <CalenderTable>
           <CalenderTr>
             <CalenderTh>1st</CalenderTh>
-            <CalenderTd>日</CalenderTd>
-            <CalenderTd>日</CalenderTd>
-            <CalenderTd>日</CalenderTd>
-            <CalenderTd>日</CalenderTd>
-            <CalenderTd>日</CalenderTd>
-            <CalenderTd>日</CalenderTd>
-            <CalenderTd>日</CalenderTd>
-            {props.calender.week1.map((day) => (
-              
-            ))}
+            {props.calender.week1.map((day,value) =>
+              day ? <CalenderTd eat={true} color={props.color}>{weekSet[value]}</CalenderTd> : <CalenderTd eat={false} color={props.color}>{weekSet[value]}</CalenderTd>
+            )}
           </CalenderTr>
           <CalenderTr>
             <CalenderTh>2nd</CalenderTh>
-            <CalenderTd>日</CalenderTd>
-            <CalenderTd>日</CalenderTd>
-            <CalenderTd>日</CalenderTd>
-            <CalenderTd>日</CalenderTd>
-            <CalenderTd>日</CalenderTd>
-            <CalenderTd>日</CalenderTd>
-            <CalenderTd>日</CalenderTd>
+            {props.calender.week2.map((day,value) =>
+                day ? <CalenderTd eat={true} color={props.color}>{weekSet[value]}</CalenderTd> : <CalenderTd eat={false} color={props.color}>{weekSet[value]}</CalenderTd>
+            )}
           </CalenderTr>
           <CalenderTr>
             <CalenderTh>3rd</CalenderTh>
-            <CalenderTd>日</CalenderTd>
-            <CalenderTd>日</CalenderTd>
-            <CalenderTd>日</CalenderTd>
-            <CalenderTd>日</CalenderTd>
-            <CalenderTd>日</CalenderTd>
-            <CalenderTd>日</CalenderTd>
-            <CalenderTd>日</CalenderTd>
+            {props.calender.week3.map((day,value) =>
+              day ? <CalenderTd eat={true} color={props.color}>{weekSet[value]}</CalenderTd> : <CalenderTd eat={false} color={props.color}>{weekSet[value]}</CalenderTd>
+            )}
           </CalenderTr>
           <CalenderTr>
             <CalenderTh>4th</CalenderTh>
-            <CalenderTd>日</CalenderTd>
-            <CalenderTd>日</CalenderTd>
-            <CalenderTd>日</CalenderTd>
-            <CalenderTd>日</CalenderTd>
-            <CalenderTd>日</CalenderTd>
-            <CalenderTd>日</CalenderTd>
-            <CalenderTd>日</CalenderTd>
+            {props.calender.week4.map((day,value) =>
+              day ? <CalenderTd eat={true} color={props.color}>{weekSet[value]}</CalenderTd> : <CalenderTd eat={false} color={props.color}>{weekSet[value]}</CalenderTd>
+            )}
           </CalenderTr>
           <CalenderTr>
             <CalenderTh>5th</CalenderTh>
-            <CalenderTd>日</CalenderTd>
-            <CalenderTd>日</CalenderTd>
-            <CalenderTd>日</CalenderTd>
-            <CalenderTd>日</CalenderTd>
-            <CalenderTd>日</CalenderTd>
-            <CalenderTd>日</CalenderTd>
-            <CalenderTd>日</CalenderTd>
+            {props.calender.week5.map((day,value) =>
+                day ? <CalenderTd eat={true} color={props.color}>{weekSet[value]}</CalenderTd> : <CalenderTd eat={false} color={props.color}>{weekSet[value]}</CalenderTd>
+            )}
           </CalenderTr>
         </CalenderTable>
         
@@ -102,11 +79,14 @@ const CalenderTh = styled.th`
   text-align: left;
 `;
 
-const CalenderTd = styled.td`
+const CalenderTd = styled.td<{eat: boolean, color: string}>`
   width: 24px;
   height: 24px;
   text-align: center;
   line-height: 24px;
+  background-color: ${({eat, color}) => eat ? color : "#fff"};
+  color: ${({eat, color}) => eat ? "#fff" : color};
+  border-radius: 50%;
 `;
 
 const WeekNo = styled.p``
