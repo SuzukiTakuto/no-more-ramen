@@ -10,6 +10,8 @@ type Props = {
 const Footer = (props: Props) => {
   const history = useHistory();
 
+  
+
   return (
     <FooterContainer>
         <IconContainer>

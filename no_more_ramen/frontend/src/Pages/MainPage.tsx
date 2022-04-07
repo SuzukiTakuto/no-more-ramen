@@ -10,7 +10,7 @@ import Calender from '../components/Calender';
 import Arrow from '../icons/Arrow';
 import SettingIcon from '../icons/SettingIcon';
 import { useHistory } from 'react-router-dom';
-import { UserParam } from '../type/type'
+import { UserParam, CalenderType } from '../type/type'
 import CompleteNoodle from '../icons/completeNoodle';
 
 
@@ -37,6 +37,16 @@ const MainPage = (props: Props) => {
     run: 0,
     walk: 0,
     days: 0,
+  });
+
+  const calenderInit = [false, false, false, false, false, false, false];
+
+  const [calender, setCalender] = useState<CalenderType>({
+    week1: calenderInit,
+    week2: calenderInit,
+    week3: calenderInit,
+    week4: calenderInit,
+    week5: calenderInit,
   });
 
   const [nowColor, setNowColor] = useState<string>("omg");
@@ -104,6 +114,7 @@ const MainPage = (props: Props) => {
         return res.json();
       }).then((data) => {
         console.log(data);
+        setCalender(data);
       }).catch(() => {
         console.log('error');
       });
@@ -121,7 +132,7 @@ const MainPage = (props: Props) => {
         <Index color={colorState[nowColor]}>{userParamData.index}</Index>
         <Comment>{comment}</Comment>
         <Parameters state={nowColor} color={colorState[nowColor]} value='13' parameter={userParamData} />
-        {isCalender && <Calender color={colorState[nowColor]} />}
+        {isCalender && <Calender color={colorState[nowColor]} calender={calender} />}
         {isCalender ? 
         <Arrow color={colorState[nowColor]} isCalender={isCalender} setIsCalender={setIsCalender} /> 
         : <Button 
