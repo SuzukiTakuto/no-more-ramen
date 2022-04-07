@@ -74,7 +74,7 @@ const Setting = (props: Props) => {
       }).catch(() => {
         console.log('error');
       });
-  })
+  }, []);
 
   const handleOnSubmit: SubmitHandler<UpdataUser> = async (values) => {
     values.sex = sex;
