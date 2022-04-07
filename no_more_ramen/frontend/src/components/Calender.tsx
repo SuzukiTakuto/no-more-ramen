@@ -1,16 +1,68 @@
 import React from 'react';
 import styled from 'styled-components';
 
-const Calender = () => {
+type Props = {
+  color: string,
+}
+
+const Calender = (props: Props) => {
   return (
     <CalenderContainer>
         <Text>食べた分のカロリーを60kgの男性がウォーキング
 でチャラにできる距離と時間、および基礎代謝分</Text>
-        <p>1st   日　月　火　水　木　金　土</p>
-        <p>2nd  日　月　火　水　木　金　土</p>
-        3rd  日　月　火　水　木　金　土
-        4th  日　月　火　水　木　金　土
-        5th  日　月　火　水　木　金　土
+        <CalenderTable>
+          <CalenderTr>
+            <CalenderTh>1st</CalenderTh>
+            <CalenderTd>日</CalenderTd>
+            <CalenderTd>日</CalenderTd>
+            <CalenderTd>日</CalenderTd>
+            <CalenderTd>日</CalenderTd>
+            <CalenderTd>日</CalenderTd>
+            <CalenderTd>日</CalenderTd>
+            <CalenderTd>日</CalenderTd>
+          </CalenderTr>
+          <CalenderTr>
+            <CalenderTh>2nd</CalenderTh>
+            <CalenderTd>日</CalenderTd>
+            <CalenderTd>日</CalenderTd>
+            <CalenderTd>日</CalenderTd>
+            <CalenderTd>日</CalenderTd>
+            <CalenderTd>日</CalenderTd>
+            <CalenderTd>日</CalenderTd>
+            <CalenderTd>日</CalenderTd>
+          </CalenderTr>
+          <CalenderTr>
+            <CalenderTh>3rd</CalenderTh>
+            <CalenderTd>日</CalenderTd>
+            <CalenderTd>日</CalenderTd>
+            <CalenderTd>日</CalenderTd>
+            <CalenderTd>日</CalenderTd>
+            <CalenderTd>日</CalenderTd>
+            <CalenderTd>日</CalenderTd>
+            <CalenderTd>日</CalenderTd>
+          </CalenderTr>
+          <CalenderTr>
+            <CalenderTh>4th</CalenderTh>
+            <CalenderTd>日</CalenderTd>
+            <CalenderTd>日</CalenderTd>
+            <CalenderTd>日</CalenderTd>
+            <CalenderTd>日</CalenderTd>
+            <CalenderTd>日</CalenderTd>
+            <CalenderTd>日</CalenderTd>
+            <CalenderTd>日</CalenderTd>
+          </CalenderTr>
+          <CalenderTr>
+            <CalenderTh>5th</CalenderTh>
+            <CalenderTd>日</CalenderTd>
+            <CalenderTd>日</CalenderTd>
+            <CalenderTd>日</CalenderTd>
+            <CalenderTd>日</CalenderTd>
+            <CalenderTd>日</CalenderTd>
+            <CalenderTd>日</CalenderTd>
+            <CalenderTd>日</CalenderTd>
+          </CalenderTr>
+        </CalenderTable>
+        
     </CalenderContainer>
   )
 }
@@ -25,8 +77,35 @@ const Text = styled.p`
     line-height: 1.6;
 `;
 
-const CalenderContents = styled.div`
+const CalenderTable = styled.table`
+  width: 252px;
+  margin: 18px auto 0;
+  border-collapse:separate;
+  border-spacing: 4px 3px;
+`;
+
+const CalenderTr = styled.tr`
 
 `;
+
+const CalenderTh = styled.th`
+  font-size; 14px;
+  color: #8C8C8C;
+  font-family: "Noto Sans";
+  text-align: left;
+`;
+
+type CalenderTdProps = {
+  color: string
+}
+
+const CalenderTd = styled.td`
+  width: 24px;
+  height: 24px;
+  text-align: center;
+  line-height: 24px;
+`;
+
+const WeekNo = styled.p``
 
 export default Calender

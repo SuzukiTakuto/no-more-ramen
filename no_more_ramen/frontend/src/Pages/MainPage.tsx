@@ -10,13 +10,9 @@ import Calender from '../components/Calender';
 import Arrow from '../icons/Arrow';
 import SettingIcon from '../icons/SettingIcon';
 import { useHistory } from 'react-router-dom';
+import { UserParam } from '../type/type'
+import CompleteNoodle from '../icons/completeNoodle';
 
-type User = {
-    index: number;
-    run: number;
-    walk: number;
-    days: number;
-};
 
 type Color = {
     [key: string]: string
@@ -28,8 +24,6 @@ const colorState: Color = {
     "danger": "#E0470E" 
 }
 
-
-
 type Props = {
     height: string;
     setHeight: React.Dispatch<React.SetStateAction<string>>;
@@ -38,14 +32,14 @@ type Props = {
 const MainPage = (props: Props) => {
   const history = useHistory();
   props.setHeight("auto");
-  const [userData, setUserdata] = useState<User>({
+  const [userParamData, setUserParamData] = useState<UserParam>({
     index: 0,
     run: 0,
     walk: 0,
     days: 0,
   });
 
-  const [nowColor, setNowColor] = useState<string>("health");
+  const [nowColor, setNowColor] = useState<string>("omg");
   const [comment, setComment] = useState<string>("けんこう");
 
   const [oneMoreText, setOneMoreText] = useState('一杯食べた?');
@@ -55,8 +49,8 @@ const MainPage = (props: Props) => {
     history.push("/setting");
   }
   
-  /*useEffect(() => {
-      fetch(`${apiUrl}/`, {
+  useEffect(() => {
+      fetch(`${apiUrl}/account/information/`, {
         method: 'GET',
         headers: {
           'Authorization': 'Bearer ' + localStorage.getItem("token"),
@@ -65,24 +59,52 @@ const MainPage = (props: Props) => {
       }).then((res) => {
         return res.json();
       }).then((data) => {
-        setUserdata({
-            index: data.index,
-            run: data.run,
-            walk: data.run,
-            days: data.days
+        console.log(data.username);
+      }).catch(() => {
+        console.log('error');
+      });
+
+      
+      fetch(`${apiUrl}/ramen_record/parameters/`, {
+        method: 'GET',
+        headers: {
+          'Authorization': 'Bearer ' + localStorage.getItem("token"),
+          'Content-Type': 'application/json',
+        },
+      }).then((res) => {
+        return res.json();
+      }).then((data) => {
+        setUserParamData({
+            index: data.ramen_point,
+            run: data.metabolism,
+            walk: data.walking_cal_per_km,
+            days: data.walking_cal_per_hour,
         });
-        if (userData.index > 6000) {
+        if (userParamData.index > 6000) {
             setNowColor("omg");
             setComment("気持ち多め");
         }
-        if (userData.index > 15000) {
+        if (userParamData.index > 15000) {
             setNowColor("danger");
             setComment("ヤバみ");
         }
       }).catch(() => {
         console.log('error');
-      })
-  })*/
+      });
+
+      fetch(`${apiUrl}/rament_record/calender/`, {
+        headers: {
+          'Authorization': 'Bearer ' + localStorage.getItem("token"),
+          'Content-Type': 'application/json',
+        },
+      }).then((res) => {
+        return res.json();
+      }).then((data) => {
+        console.log(data);
+      }).catch(() => {
+        console.log('error');
+      });
+  }, []);
 
   return (
     <div>
@@ -93,17 +115,20 @@ const MainPage = (props: Props) => {
             <Noodle />
         </NoodleIcon>
         <Message>あなたのラーメン指数</Message>
-        <Index color={colorState[nowColor]}>10</Index>
+        <Index color={colorState[nowColor]}>{userParamData.index}</Index>
         <Comment>{comment}</Comment>
-        <Parameters state={nowColor} color={colorState[nowColor]} value='13' />
-        {isCalender && <Calender />}
+        <Parameters state={nowColor} color={colorState[nowColor]} value='13' parameter={userParamData} />
+        {isCalender && <Calender color={colorState[nowColor]} />}
         {isCalender ? 
         <Arrow color={colorState[nowColor]} isCalender={isCalender} setIsCalender={setIsCalender} /> 
         : <Button 
             bgColor={"#fff"} 
             color={colorState[nowColor]} 
             stroke={`1px solid ${colorState[nowColor]}`} 
-            onClick={() => setIsCalender(!isCalender)}>
+            onClick={(e: React.MouseEvent<HTMLElement, MouseEvent>) => {
+              e.preventDefault();
+              setIsCalender(!isCalender);
+            }}>
                 詳細
         </Button>}
         <Footer color={colorState[nowColor]} text={oneMoreText} />
