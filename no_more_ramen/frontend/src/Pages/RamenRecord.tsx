@@ -128,7 +128,7 @@ const RamenRecord = (props: Props) => {
         e.preventDefault();
         console.log(data);
         fetch(`${apiUrl}/ramen_record/create/`, {
-            method: 'GET',
+            method: 'POST',
             mode: 'cors',
             cache: 'no-cache',
             credentials: 'same-origin',
