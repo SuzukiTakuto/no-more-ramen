@@ -41,9 +41,9 @@ services:
     restart: always
     command: >
       bash -c "
-        python wait_for_db.py &&
         python manage.py makemigrations &&
         python manage.py migrate &&
+        python wait_for_db.py &&
         python manage.py runserver 0.0.0.0:8000
       "
 

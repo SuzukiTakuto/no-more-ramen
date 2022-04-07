@@ -40,7 +40,8 @@ INSTALLED_APPS = [
     'rest_framework_simplejwt',
     'rest_framework_simplejwt.token_blacklist',
     'corsheaders',
-    'account'
+    'account',
+    'ramen_record'
 ]
 
 MIDDLEWARE = [
@@ -154,6 +155,7 @@ SIMPLE_JWT = {
 CORS_ORIGIN_WHITELIST = [
     "http://localhost:3000",
 ]
+CORS_ALLOW_ALL_ORIGINS = True
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field

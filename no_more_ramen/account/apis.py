@@ -14,7 +14,7 @@ from .serializer import CreateUserSerializer, UpdateUserSerializer
 User = get_user_model()
 
 
-class CreateUser(generics.CreateAPIView):
+class CreateUserView(generics.CreateAPIView):
     permission_classes = [AllowAny]
     serializer_class = CreateUserSerializer
     queryset = User.objects.all()
@@ -45,7 +45,7 @@ class CreateUser(generics.CreateAPIView):
         return Response({'status': 201, 'username': user.username}, status=status.HTTP_201_CREATED)
 
 
-class CreateUserComplete(views.APIView):
+class CreateUserCompleteView(views.APIView):
     """メール内URLアクセス後のユーザー本登録"""
     timeout_seconds = getattr(settings, 'ACTIVATION_TIMEOUT_SECONDS', 60 * 60 * 24)  # デフォルトでは1日以内
     permission_classes = [AllowAny]

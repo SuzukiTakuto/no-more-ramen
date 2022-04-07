@@ -27,10 +27,11 @@ class CreateUserSerializer(serializers.ModelSerializer):
     )
     password = serializers.CharField(write_only=True, required=True, validators=[validate_password])
     password2 = serializers.CharField(write_only=True, required=True)
+    sex = serializers.ChoiceField(["male", "female", "other"], required=True)
 
     class Meta:
         model = User
-        fields = ('username', 'email', 'password', 'password2')
+        fields = ('username', 'email', 'password', 'password2', "sex")
 
     def validate(self, attrs):
         if attrs['password'] != attrs['password2']:
@@ -41,7 +42,8 @@ class CreateUserSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         user = User.objects.create(
             username=validated_data['username'],
-            email=validated_data['email']
+            email=validated_data['email'],
+            sex=validated_data["sex"],
         )
         user.set_password(validated_data['password'])
         user.is_active = False
