@@ -111,21 +111,21 @@ const Setting = (props: Props) => {
   }
 
   const logout = () => {
-      fetch(`${apiUrl}/account/logout/`, {
-        method: 'GET',
+      const body = {
+        token: localStorage.getItem("token")
+      }
+      fetch(`${apiUrl}/account/login/refresh/`, {
+        method: 'POST',
+        mode: 'cors',
+        cache: 'no-cache',
+        credentials: 'same-origin',
         headers: {
             'Authorization': 'JWT ' + localStorage.getItem("token"),
             'Content-Type': 'application/json',
-          },
+        },
+        body: JSON.stringify(body),
       }).then((res) => {
-        console.log(res);
-        return res.json();
-      }).then((data) => {
-          console.log(data);
-          if (data.status === "205") {
-              localStorage.removeItem("token");
-              history.push("/usersetup");
-          }
+        history.push("/usersetup");
       }).catch((err: Error) => {
           console.log(err);
       });
