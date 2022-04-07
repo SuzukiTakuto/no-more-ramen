@@ -118,6 +118,7 @@ const Setting = (props: Props) => {
             'Content-Type': 'application/json',
           },
       }).then((res) => {
+        console.log(res);
         return res.json();
       }).then((data) => {
           console.log(data);
