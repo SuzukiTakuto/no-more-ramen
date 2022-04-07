@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import styled from 'styled-components';
 
 type Props = {
@@ -9,16 +9,20 @@ type Props = {
 }
 
 const RankingItem = (props: Props) => {
-  const [color, setColor] = useState("#2bad62");
+  const [color, setColor] = useState("#2BAD62");
 
-  switch (true) {
-    case props.score > 6000:
-        setColor('#FFC400');
-        break;
-    case props.score > 15000:
-        setColor("#E0470E");
-        break;
-  }
+  useEffect(() => {
+      console.log("read");
+      switch (true) {
+        case props.score > 6000:
+            setColor('#FFC400');
+            break;
+        case props.score > 15000:
+            setColor("#E0470E");
+            break;
+    }
+  }, []);
+  
 
   return (
     <ItemContainer color={color}>
@@ -52,12 +56,16 @@ const RankingItem = (props: Props) => {
 
 const ItemContainer = styled.div`
     display: flex;
+    align-items: center;
+    width: 298px;
+    margin: 0 auto 16px;
 `;
 
 const Rank = styled.p`
     font-size: 16px;
     font-weigth: 600;
     color: #4B4B4B;
+    margin-right: 24px;
 `;
 
 const Icon = styled.div<{color: string}>`
@@ -65,12 +73,17 @@ const Icon = styled.div<{color: string}>`
     height: 32px;
     border-radius: 50%;
     background-color: ${({color}) => color};
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-right: 60px;
 `;
 
 const Username = styled.p`
     font-size: 16px;
     font-weight: 600;
     color: #4B4B4B;
+    margin-right: 94px;
 `;
 
 const Score = styled.p<{color: string}>`

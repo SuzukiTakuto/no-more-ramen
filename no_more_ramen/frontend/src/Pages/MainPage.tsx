@@ -49,7 +49,7 @@ const MainPage = (props: Props) => {
     week5: calenderInit,
   });
 
-  const [nowColor, setNowColor] = useState<string>("health");
+  const [nowColor, setNowColor] = useState<string>("danger");
   const [comment, setComment] = useState<string>("けんこう");
 
   const [oneMoreText, setOneMoreText] = useState('一杯食べた?');

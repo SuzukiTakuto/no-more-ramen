@@ -29,6 +29,7 @@ const IconContainer = styled.button<{color: string, userIcon: string}>`
     display: flex;
     justify-content: center;
     align-items: center;
+    border-radius: 50%;
     background-color: ${({color, userIcon}) => userIcon === "2" ? color : "#fff"};
 `;
 
