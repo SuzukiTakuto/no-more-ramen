@@ -9,8 +9,15 @@ type Param = {
     token: string;
 }
 
-const Complete = () => {
+type Props = {
+  setHeight: React.Dispatch<React.SetStateAction<string>>
+}
+
+
+const Complete = (props: Props) => {
+  props.setHeight("667px");
   const param = useParams<Param>();
+  const history = useHistory();
   console.log(param.token);
   useEffect(() => {
       fetch(`${apiUrl}/account/create/complete/${param.token}`, {
@@ -34,7 +41,7 @@ const Complete = () => {
             <CompleteNoodle />
         </CompleteNoodleIcon>
         <Message>登録完了が完了しました！<br/>早速始めてみましょう。</Message>
-        <Button bgColor={"#2BAD62"} color={"#fff"} stroke={"none"} mt={"95px auto;"}>始める</Button>
+        <Button bgColor={"#2BAD62"} color={"#fff"} stroke={"none"} mt={"95px auto;"} onClick={() => history.push("/top")}>始める</Button>
     </CompleteContainer>
   )
 }

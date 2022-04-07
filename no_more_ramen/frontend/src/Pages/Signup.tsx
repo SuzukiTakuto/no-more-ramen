@@ -126,7 +126,7 @@ const Signup = () => {
 
                 <Sex>
                     <SexInput>性別</SexInput>
-                    <MaleIcon select={male}>
+                    <MaleIcon select={male} color={"#2bad62"}>
                         <div onClick={() => {
                             setSex("male");
                             setMale(true);
@@ -138,7 +138,7 @@ const Signup = () => {
                             </svg>
                         </div>
                     </MaleIcon>
-                    <OtherIcon select={other}>
+                    <OtherIcon select={other} color={"#2bad62"}>
                         <div onClick={() => {
                             setSex("other");
                             setMale(false);
@@ -150,7 +150,7 @@ const Signup = () => {
                             </svg>
                         </div>
                     </OtherIcon>
-                    <FamaleIcon select={female}>
+                    <FamaleIcon select={female} color={"#2bad62"}>
                         <div onClick={() => {
                             setSex("female");
                             setMale(false);

@@ -44,6 +44,7 @@ const Login = () => {
         history.push(`/top`);
     }).catch(()=>{
         console.log("error");
+        history.push("/usersetup");
     });
   }
 
