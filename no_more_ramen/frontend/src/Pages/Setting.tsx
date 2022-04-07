@@ -199,7 +199,7 @@ const Setting = (props: Props) => {
                 </MailDeliver>
 
 
-                <Button bgColor={color} color={"#fff"} stroke={"none"} type="submit" disabled={!formState.isDirty || formState.isSubmitting}>
+                <Button bgColor={color} color={"#fff"} stroke={"none"} type="submit">
                 変更する
                 </Button>
             </form>
