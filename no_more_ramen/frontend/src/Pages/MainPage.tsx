@@ -118,11 +118,16 @@ const MainPage = (props: Props) => {
             setNowColor("omg");
             setComment("気持ち多め");
             console.log(comment);
-        }
-        if (userParamData.index > 15000) {
+      }
+      else if (userParamData.index > 15000) {
             setNowColor("danger");
             setComment("ヤバみ");
-        }
+      }
+      else {
+        setNowColor("health");
+        setComment("けんこう");
+      }
+        
   }, [userParamData])
 
   return (
