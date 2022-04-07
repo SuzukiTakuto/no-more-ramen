@@ -6,7 +6,7 @@ from .models import RamenRecord
 
 class Calorie:
     type = {"Miso": 510, "Shio": 470, "Shoyu": 470, "Tonkotsu": 500,
-            "Jiro": 1500, "AburaSoba": 500, "IeKei": 800, "Tsukemen": 550}
+            "Jiro": 1500, "AburaSoba": 500, "Iekei": 800, "Tsukemen": 550}
     volume = {"large": 1.3, "medium": 1.0, "small": 0.7}
     rice = 250
 
@@ -20,29 +20,32 @@ class Calorie:
 
 
 class CreateRamenRecordSerializer(serializers.ModelSerializer):
-    type = serializers.ChoiceField(["Miso", "Shio", "Shoyu", "Tonkotsu", "Jiro", "AburaSoba", "IeKei", "Tsukemen"], required=True)
-    volume = serializers.ChoiceField(["large", "medium", "small"], required=True)
+    # type = serializers.ChoiceField(["Miso", "Shio", "Shoyu", "Tonkotsu", "Jiro", "AburaSoba", "IeKei", "Tsukemen"], required=True)
+    type = serializers.CharField(required=True)
+    # volume = serializers.ChoiceField(["large", "medium", "small"], required=True)
+    volume = serializers.CharField(required=True)
     rice = serializers.BooleanField(required=True)
     date_time = serializers.CharField()
 
     class Meta:
         model = RamenRecord
-        exclude = ["owner", "calorie", "date_time"]
+        exclude = ["owner", "calorie"]
 
     def create(self, validated_data):
-        calorie = Calorie.calculate(validated_data.data)
+        owner = self.context.get("user")
+        calorie = Calorie.calculate(validated_data)
         date_format = "%Y/%m/%d/%H:%M"
-        if validated_data.data["date_time"] == '':
-            validated_data.data["date_time"] = timezone.now()
+        if validated_data["date_time"] == '':
+            validated_data["date_time"] = timezone.now()
         else:
-            validated_data.data["date_time"] = timezone.datetime.strptime(validated_data.data["date_time"], date_format)
+            validated_data["date_time"] = timezone.datetime.strptime(validated_data["date_time"], date_format)
 
         ramen = RamenRecord(
-            owner=validated_data.data["owner"],
-            type=validated_data.data["type"],
-            volume=validated_data.data["volume"],
-            rice=validated_data.data["rice"],
-            date_time=validated_data.data["date_time"],
+            owner=owner,
+            type=validated_data["type"],
+            volume=validated_data["volume"],
+            rice=validated_data["rice"],
+            date_time=validated_data["date_time"],
             calorie=calorie
         )
         ramen.save()

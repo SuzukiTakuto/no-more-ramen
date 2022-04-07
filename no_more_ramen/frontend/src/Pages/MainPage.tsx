@@ -88,19 +88,12 @@ const MainPage = (props: Props) => {
       }).then((data) => {
           console.log(data);
         setUserParamData({
-            index: data.ramen_point,
+            index: data.ramen_point as number,
             run: data.metabolism,
             walk: data.walking_cal_per_km,
             days: data.walking_cal_per_hour,
         });
-        if (userParamData.index > 6000) {
-            setNowColor("omg");
-            setComment("気持ち多め");
-        }
-        if (userParamData.index > 15000) {
-            setNowColor("danger");
-            setComment("ヤバみ");
-        }
+
       }).catch(() => {
         console.log('error');
       });
@@ -119,6 +112,18 @@ const MainPage = (props: Props) => {
         console.log('error');
       });
   }, []);
+
+  useEffect(() => {
+      if (userParamData.index > 6000) {
+            setNowColor("omg");
+            setComment("気持ち多め");
+            console.log(comment);
+        }
+        if (userParamData.index > 15000) {
+            setNowColor("danger");
+            setComment("ヤバみ");
+        }
+  }, [userParamData])
 
   return (
     <div>

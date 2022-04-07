@@ -141,6 +141,7 @@ const RamenRecord = (props: Props) => {
         }).then((res) => {
             return res.json();
         }).then((data) => {
+            console.log(data);
             history.push(`/top`);
         }).catch(()=>{
             console.log("error");

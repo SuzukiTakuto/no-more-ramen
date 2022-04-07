@@ -1,12 +1,14 @@
 import datetime
 from dateutil.relativedelta import relativedelta
+import pytz
 
 from django.contrib.auth import get_user_model
 from django.db.models import Sum
 from django.db import transaction
+from django.utils import timezone
 
 from rest_framework import views, status, generics
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, AllowAny
 
 from .serializer import CreateRamenRecordSerializer
 from .models import RamenRecord
@@ -22,6 +24,7 @@ class CalorieExpenditure:
 
     @classmethod
     def calculate(cls, calorie, sex):
+        print(calorie)
         metabolism = calorie / cls.metabolism.get(sex)
         walking_cal_per_km = calorie / cls.walking_cal_per_km.get(sex)
         walking_cal_per_hour = calorie / cls.walking_cal_per_hour.get(sex)
@@ -35,7 +38,7 @@ class UserParameterView(views.APIView):
     def get(self, request):
         one_month = datetime.datetime.now() - datetime.timedelta(days=30)
         if RamenRecord.objects.filter(owner=request.user, date_time__range=[one_month, datetime.datetime.now()]).exists():
-            month_calorie = RamenRecord.objects.filter(owner=request.user, date_time__range=[one_month, datetime.datetime.now()]).aggregate(Sum("calorie"))
+            month_calorie = RamenRecord.objects.filter(owner=request.user, date_time__range=[one_month, datetime.datetime.now()]).aggregate(Sum("calorie")).get('calorie__sum')
         else:
             month_calorie = 0
 
@@ -54,34 +57,34 @@ class RamenCalenderView(views.APIView):
     def get(self, request):
         first_date_this_week = datetime.date.today() - relativedelta(days=datetime.date.today().weekday()) - datetime.timedelta(days=1)
         calender_date_matrix = [[first_date_this_week + datetime.timedelta(days=i) - datetime.timedelta(days=7*j) for i in range(7)] for j in range(5)]
-
-        calender_max_range = datetime.datetime.now() - datetime.timedelta(days=35)
-        if RamenRecord.objects.filter(owner=request.user, date_time__range=[calender_max_range, datetime.datetime.now()]).exists():
-            ramen_date_list = [ramen["date_time"].date() for ramen in RamenRecord.objects.filter(owner=request.user, date_time__range=[calender_max_range, datetime.datetime.now()]).values("date_time")]
+        now = datetime.datetime.now()
+        calender_max_range = now - datetime.timedelta(days=35)
+        if RamenRecord.objects.filter(owner=request.user, date_time__range=[calender_max_range, now]).exists():
+            ramen_date_list = [ramen["date_time"].date() for ramen in RamenRecord.objects.filter(owner=request.user, date_time__range=[calender_max_range, now]).values("date_time")]
         else:
             ramen_date_list = []
 
         ramen_calender = [[date in ramen_date_list for date in week] for week in calender_date_matrix]
         context = {"status": 200}
         for i, ramen_week in enumerate(ramen_calender):
-            context[f"{i+1}st_week"] = ramen_week
+            context[f"week{i+1}"] = ramen_week
 
         return Response(context, status=status.HTTP_200_OK)
 
 
 class CreateRamenRecordView(generics.CreateAPIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [AllowAny]
     serializer_class = CreateRamenRecordSerializer
     queryset = RamenRecord.objects.all()
 
     @transaction.atomic
     def post(self, request, *args, **kwargs):
-        request.data["owner"] = request.user
-        serializer = CreateRamenRecordSerializer(data=request.data)
+        serializer = CreateRamenRecordSerializer(data=request.data, context={"user": request.user})
         if serializer.is_valid() is False:
             serializer.errors["status"] = 400
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         ramen_object = serializer.save()
+        print(ramen_object)
 
         return Response({"status": 201, "ramen_record_id": ramen_object.pk}, status=status.HTTP_201_CREATED)
 
