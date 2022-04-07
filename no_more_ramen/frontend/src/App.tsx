@@ -10,6 +10,7 @@ import Complete from './Pages/Complete';
 import styled,{ createGlobalStyle } from 'styled-components';
 import reset from 'styled-reset';
 import Setting from './Pages/Setting';
+import RamenRecord from './Pages/RamenRecord';
 
 function App() {
   const [height, setHeight] = useState("667px");
@@ -43,6 +44,9 @@ function App() {
             </Route>
             <Route path={"/account/create/complete/:token"}>
               <Complete />
+            </Route>
+            <Route path={"/ramen_record"}>
+              <RamenRecord setHeight={setHeight} />
             </Route>
           </Switch>
         </BrowserRouter>

@@ -1,11 +1,13 @@
 import React from 'react'
 import styled from 'styled-components';
 import ParamIcon from '../icons/ParamIcon';
+import { UserParam } from '../type/type';
 
 type Props = {
     state: string;
     color: string;
     value: string;
+    parameter: UserParam
 }
 
 const Parameters = (props: Props) => {
@@ -14,17 +16,17 @@ const Parameters = (props: Props) => {
         <ParamWrapper>
             <Param>
                 <ParamIcon state={props.state} color={props.color} item={'run'} />
-                <ParamValue color={props.color}>16</ParamValue>
+                <ParamValue color={props.color}>{props.parameter.run}</ParamValue>
                 <Unit color={props.color}>km</Unit>
             </Param>
             <Param>
                 <ParamIcon state={props.state} color={props.color} item={'walk'} />
-                <ParamValue color={props.color}>5</ParamValue>
+                <ParamValue color={props.color}>{props.parameter.walk}</ParamValue>
                 <Unit color={props.color}>Hours</Unit>
             </Param>
             <Param>
                 <ParamIcon state={props.state} color={props.color} item={'days'} />
-                <ParamValue color={props.color}>1</ParamValue>
+                <ParamValue color={props.color}>{props.parameter.days}</ParamValue>
                 <Unit color={props.color}>Days</Unit>
             </Param>
         </ParamWrapper>

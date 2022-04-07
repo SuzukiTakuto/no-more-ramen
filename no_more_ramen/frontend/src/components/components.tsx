@@ -88,3 +88,20 @@ export const OtherIcon = styled.div<{select: boolean}>`
         "border-radius: 0; background-color: #fff;"
     )}
 `;
+
+export const BackIcon = styled.button`
+    position: absolute;
+    top: 44.7px;
+    left: 29.5px;
+    border: none;
+    background-color: #fff;
+    cursor: pointer;
+`;
+
+export const QuestionText = styled.p`
+    display: block;
+    width: 105px;
+    font-size: 12px;
+    color: #4B4B4B;
+    text-align: right;
+`;

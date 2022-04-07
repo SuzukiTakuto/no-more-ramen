@@ -4,7 +4,7 @@ import Noodle_small from '../icons/Noodle_small';
 import Back from '../icons/Back';
 import { useForm, SubmitHandler, SubmitErrorHandler } from 'react-hook-form';
 import { apiUrl } from '../utils';
-import { Input, Button } from '../components/components';
+import { Input, Button, BackIcon } from '../components/components';
 import { UpdataUser } from '../type/type';
 import { MaleIcon, FamaleIcon, OtherIcon } from '../components/components';
 import { useHistory } from 'react-router-dom';
@@ -21,6 +21,7 @@ const Setting = (props: Props) => {
   const [ male, setMale ] = useState(false);
   const [ famale, setFamale ] = useState(false);
   const [ other, setOther ] = useState(false);
+  const [ mailDeliver, setMailDeliver ] = useState(true);
 
   const { register, watch, handleSubmit, formState } = useForm<UpdataUser>({
     mode: 'onSubmit',
@@ -33,6 +34,7 @@ const Setting = (props: Props) => {
 
   const handleOnSubmit: SubmitHandler<UpdataUser> = async (values) => {
     values.sex = sex;
+    values.mail_delivery = mailDeliver;
     console.log(values);
 
     return fetch (`${apiUrl}/api/token/`, {
@@ -69,7 +71,10 @@ const Setting = (props: Props) => {
       }).then((res) => {
         return res.json();
       }).then((data) => {
-          if (data.status === "205") history.push("/usersetup");
+          if (data.status === "205") {
+              localStorage.removeItem("token");
+              history.push("/usersetup");
+          }
       }).catch(() => {
           console.log("error");
       });
@@ -92,9 +97,6 @@ const Setting = (props: Props) => {
         <UpdataForm>
             <form onSubmit={handleSubmit(handleOnSubmit, handleOnError)} >
                 <Input>
-                    {!!formState.errors.username && 
-                    <p>{formState.errors.username.message}</p>
-                    }
                     <input
                     id='username'
                     type="text" 
@@ -106,7 +108,7 @@ const Setting = (props: Props) => {
                 </Input>
                 
                 <Sex>
-                    <SexInput>性別変更</SexInput>
+                    <InputTitle>性別変更</InputTitle>
                     <MaleIcon select={male}>
                         <div onClick={() => {
                             setSex("male");
@@ -145,6 +147,19 @@ const Setting = (props: Props) => {
                     </FamaleIcon>
                 </Sex>
 
+                <MailDeliver>
+                    <InputTitle>メール配信</InputTitle>
+                    <MailDeliverSwitchYes mailDeliver={mailDeliver} onClick={(e: React.MouseEvent<HTMLElement, MouseEvent>) => {
+                        e.preventDefault();
+                        setMailDeliver(true);
+                    }}>はい</MailDeliverSwitchYes>
+                    <MailDeliverSwitchNo mailDeliver={mailDeliver} onClick={(e: React.MouseEvent<HTMLElement, MouseEvent>) => {
+                        e.preventDefault();
+                        setMailDeliver(false);
+                    }}>いいえ</MailDeliverSwitchNo>
+                </MailDeliver>
+
+
                 <Button bgColor={"#2BAD62"} color={"#fff"} stroke={"none"} type="submit" disabled={!formState.isDirty || formState.isSubmitting}>
                 変更する
                 </Button>
@@ -154,15 +169,6 @@ const Setting = (props: Props) => {
     </div>
   )
 }
-
-const BackIcon = styled.button`
-    position: absolute;
-    top: 44.7px;
-    left: 29.5px;
-    border: none;
-    background-color: #fff;
-    cursor: pointer;
-`;
 
 const NoodleIcon = styled.div`
     width: 49px;
@@ -181,7 +187,13 @@ const Sex = styled.div`
     align-items: center;
 `;
 
-const SexInput = styled.div`
+const MailDeliver = styled.div`
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+`;
+
+const InputTitle = styled.div`
     margin: 10px 0 ;
     width: 38%;
     height: 35px;
@@ -191,5 +203,30 @@ const SexInput = styled.div`
     line-height: 35px;
     color: #8C8C8C;
 `;
+
+const MailDeliverSwitchYes = styled.button<{mailDeliver: boolean}>`
+    cursor: pointer;
+    width: 80px;
+    height: 24px;
+    text-align: center;
+    font-size: 16px;
+    color: ${({mailDeliver}) => mailDeliver ? "#fff;" : "#8c8c8c;" };
+    background-color: ${({mailDeliver}) => mailDeliver ? "#2BAD62;" : "#fff;" };
+    border: none;
+    border-radius: 16px;
+`;
+
+const MailDeliverSwitchNo = styled.button<{mailDeliver: boolean}>`
+    cursor: pointer;
+    width: 80px;
+    height: 24px;
+    text-align: center;
+    font-size: 16px;
+    color: ${({mailDeliver}) => mailDeliver ? "#8c8c8c;" : "#fff;" };
+    background-color: ${({mailDeliver}) => mailDeliver ? "#fff;" : "#2BAD62;" };
+    border: none;
+    border-radius: 16px;
+`;
+
 
 export default Setting

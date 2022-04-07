@@ -25,7 +25,7 @@ const ParamIcon = (props: Props) => {
                         <g id="グループ_19" data-name="グループ 19" transform="translate(-163.279 -376.409)">
                             <path id="arrow-ios-back-fill" d="M16.252,17.724a.73.73,0,0,1-.57-.27l-3.528-4.382a.73.73,0,0,1,0-.928l3.652-4.382a.731.731,0,1,1,1.125.935l-3.265,3.915,3.155,3.915a.73.73,0,0,1-.57,1.2Z" transform="translate(151.29 368.911)" fill={props.color}/>
                             <path id="arrow-ios-back-fill-2" data-name="arrow-ios-back-fill" d="M4.263,10.226a.73.73,0,0,1-.57-.27L.166,5.573a.73.73,0,0,1,0-.928L3.818.264A.731.731,0,1,1,4.943,1.2L1.678,5.113,4.833,9.028a.73.73,0,0,1-.57,1.2Z" transform="translate(189.677 386.635) rotate(180)" fill={props.color}/>
-                            <line id="線_4" data-name="線 4" x2="24.957" transform="translate(163.999 381.535)" fill="none" stroke="#e0470e" stroke-width="1.5"/>
+                            <line id="線_4" data-name="線 4" x2="24.957" transform="translate(163.999 381.535)" fill="none" stroke={props.color} stroke-width="1.5"/>
                         </g>
                     </svg>
                 </DistanceIcon>
@@ -43,8 +43,8 @@ const ParamIcon = (props: Props) => {
             <div style={style}>
                 <ClockIcon>
                     <svg id="clock" xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 25 25">
-                        <path id="パス_16" data-name="パス 16" d="M12.5,23.438A10.938,10.938,0,1,0,1.563,12.5,10.938,10.938,0,0,0,12.5,23.438ZM25,12.5A12.5,12.5,0,1,1,12.5,0,12.5,12.5,0,0,1,25,12.5Z" fill="#e0470e" fill-rule={props.color}/>
-                        <path id="パス_17" data-name="パス 17" d="M16.531,6.75a.781.781,0,0,1,.781.781v8.141l5.075,2.9a.781.781,0,0,1-.775,1.356L16.144,16.8a.781.781,0,0,1-.394-.678V7.531A.781.781,0,0,1,16.531,6.75Z" transform="translate(-4.812 -2.062)" fill="#e0470e" fill-rule={props.color}/>
+                        <path id="パス_16" data-name="パス 16" d="M12.5,23.438A10.938,10.938,0,1,0,1.563,12.5,10.938,10.938,0,0,0,12.5,23.438ZM25,12.5A12.5,12.5,0,1,1,12.5,0,12.5,12.5,0,0,1,25,12.5Z" fill={props.color} fill-rule={props.color}/>
+                        <path id="パス_17" data-name="パス 17" d="M16.531,6.75a.781.781,0,0,1,.781.781v8.141l5.075,2.9a.781.781,0,0,1-.775,1.356L16.144,16.8a.781.781,0,0,1-.394-.678V7.531A.781.781,0,0,1,16.531,6.75Z" transform="translate(-4.812 -2.062)" fill={props.color} fill-rule={props.color}/>
                     </svg>
                 </ClockIcon>
                 <Icon>
@@ -61,8 +61,8 @@ const ParamIcon = (props: Props) => {
             <div style={style}>
                 <ClockIcon>
                     <svg id="clock" xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 25 25">
-                        <path id="パス_16" data-name="パス 16" d="M12.5,23.438A10.938,10.938,0,1,0,1.563,12.5,10.938,10.938,0,0,0,12.5,23.438ZM25,12.5A12.5,12.5,0,1,1,12.5,0,12.5,12.5,0,0,1,25,12.5Z" fill="#e0470e" fill-rule={props.color}/>
-                        <path id="パス_17" data-name="パス 17" d="M16.531,6.75a.781.781,0,0,1,.781.781v8.141l5.075,2.9a.781.781,0,0,1-.775,1.356L16.144,16.8a.781.781,0,0,1-.394-.678V7.531A.781.781,0,0,1,16.531,6.75Z" transform="translate(-4.812 -2.062)" fill="#e0470e" fill-rule={props.color}/>
+                        <path id="パス_16" data-name="パス 16" d="M12.5,23.438A10.938,10.938,0,1,0,1.563,12.5,10.938,10.938,0,0,0,12.5,23.438ZM25,12.5A12.5,12.5,0,1,1,12.5,0,12.5,12.5,0,0,1,25,12.5Z" fill={props.color} fill-rule={props.color}/>
+                        <path id="パス_17" data-name="パス 17" d="M16.531,6.75a.781.781,0,0,1,.781.781v8.141l5.075,2.9a.781.781,0,0,1-.775,1.356L16.144,16.8a.781.781,0,0,1-.394-.678V7.531A.781.781,0,0,1,16.531,6.75Z" transform="translate(-4.812 -2.062)" fill={props.color} fill-rule={props.color}/>
                     </svg>
                 </ClockIcon>
                 <Icon>
