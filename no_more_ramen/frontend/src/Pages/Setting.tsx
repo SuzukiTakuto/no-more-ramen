@@ -4,7 +4,7 @@ import Noodle_small from '../icons/Noodle_small';
 import Back from '../icons/Back';
 import { useForm, SubmitHandler, SubmitErrorHandler } from 'react-hook-form';
 import { apiUrl } from '../utils';
-import { Input, Button, BackIcon } from '../components/components';
+import { Input, Button, BackIcon, Message } from '../components/components';
 import { UpdataUser } from '../type/type';
 import { MaleIcon, FamaleIcon, OtherIcon } from '../components/components';
 import { useHistory, useParams } from 'react-router-dom';
@@ -23,6 +23,7 @@ type Param = {
 const Setting = (props: Props) => {
   const history = useHistory();
   const [ color, setColor ] = useState('');
+  const [ isSet, setIsSet ] = useState(false);
 
   const param = useParams<Param>();
   useEffect(() => {
@@ -43,22 +44,37 @@ const Setting = (props: Props) => {
 
   props.setHeight("667px");
   const [ sex, setSex] = useState("");
-  const [ male, setMale ] = useState(false);
-  const [ female, setFemale ] = useState(false);
-  const [ other, setOther ] = useState(false);
-  const [ userIcon, setUserIcon ] = useState("0");
+  const [ userIcon, setUserIcon ] = useState("");
   const [ mailDeliver, setMailDeliver ] = useState(true);
 
   const { register, watch, handleSubmit, formState } = useForm<UpdataUser>({
     mode: 'onSubmit',
     reValidateMode: 'onChange',
     defaultValues: {
-        username: '',
-        sex: '',
-        userIcon: '',
-        mail_delivery: true,
+        sex: sex,
+        userIcon: userIcon,
+        mail_delivery: mailDeliver,
     }
   });
+
+  useEffect(() => {
+      fetch(`${apiUrl}/account/information/`, {
+        method: 'GET',
+        headers: {
+          'Authorization': 'JWT ' + localStorage.getItem("token"),
+          'Content-Type': 'application/json',
+        },
+      }).then((res) => {
+        return res.json();
+      }).then((data) => {
+        console.log(data);
+        setSex(data.sex);
+        setUserIcon(data.icon_id);
+        setMailDeliver(data.send_report);
+      }).catch(() => {
+        console.log('error');
+      });
+  })
 
   const handleOnSubmit: SubmitHandler<UpdataUser> = async (values) => {
     values.sex = sex;
@@ -81,7 +97,9 @@ const Setting = (props: Props) => {
         return res.json();
     }).then((data) => {
         console.log(data);
-        history.push("/top");
+        if (data.status === 200) {
+            setIsSet(true);
+        }
     }).catch(()=>{
         console.log("error");
     });
@@ -95,12 +113,13 @@ const Setting = (props: Props) => {
       fetch(`${apiUrl}/account/logout/`, {
         method: 'GET',
         headers: {
-            'Authorization': 'Bearer ' + localStorage.getItem("token"),
+            'Authorization': 'JWT ' + localStorage.getItem("token"),
             'Content-Type': 'application/json',
           },
       }).then((res) => {
         return res.json();
       }).then((data) => {
+          console.log(data);
           if (data.status === "205") {
               localStorage.removeItem("token");
               history.push("/usersetup");
@@ -122,56 +141,37 @@ const Setting = (props: Props) => {
         <NoodleIcon>
             <Noodle_small />
         </NoodleIcon>
-
-
+        
+        {isSet ? <Message>設定が完了しました</Message> : null}
+        
         <UpdataForm>
             <form onSubmit={handleSubmit(handleOnSubmit, handleOnError)} >
-                <Input color={color}>
-                    <input
-                    id='username'
-                    type="text" 
-                    {...register('username', {
-                        required: '* this is required filed'
-                    })} 
-                    placeholder="ユーザー名変更"
-                    />
-                </Input>
-                
                 <Sex>
                     <InputTitle color={color}>性別変更</InputTitle>
-                    <MaleIcon select={male} color={color}>
+                    <MaleIcon selected={sex} color={color}>
                         <div onClick={() => {
                             setSex("male");
-                            setMale(true);
-                            setFemale(false);
-                            setOther(false);
                         }}>
                             <svg xmlns="http://www.w3.org/2000/svg" width="19.996" height="19.997" viewBox="0 0 19.996 19.997">
-                                <path id="gender-male" d="M16.12,4.5V6.162h5.474L15.2,12.553a6.673,6.673,0,1,0,1.176,1.176l6.39-6.391v5.474h1.662V4.5ZM11.133,22.787A4.987,4.987,0,1,1,16.12,17.8,4.987,4.987,0,0,1,11.133,22.787Z" transform="translate(-4.437 -4.5)" fill={male ? "#fff" : color} />
+                                <path id="gender-male" d="M16.12,4.5V6.162h5.474L15.2,12.553a6.673,6.673,0,1,0,1.176,1.176l6.39-6.391v5.474h1.662V4.5ZM11.133,22.787A4.987,4.987,0,1,1,16.12,17.8,4.987,4.987,0,0,1,11.133,22.787Z" transform="translate(-4.437 -4.5)" fill={sex === "male" ? "#fff" : color} />
                             </svg>
                         </div>
                     </MaleIcon>
-                    <OtherIcon select={other} color={color}>
+                    <OtherIcon selected={sex} color={color}>
                         <div onClick={() => {
                             setSex("other");
-                            setMale(false);
-                            setFemale(false);
-                            setOther(true);
                         }}>
                             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="19.997" viewBox="0 0 20 19.997">
-                                <path id="genderless" d="M17.778,13.6A7.49,7.49,0,0,0,15.5,8.1,7.488,7.488,0,0,0,10,5.822,7.5,7.5,0,0,0,4.5,8.1,7.488,7.488,0,0,0,2.222,13.6,7.488,7.488,0,0,0,4.5,19.092,7.5,7.5,0,0,0,10,21.375a7.488,7.488,0,0,0,5.5-2.282A7.49,7.49,0,0,0,17.778,13.6ZM20,13.6a9.769,9.769,0,0,1-.79,3.88,9.854,9.854,0,0,1-5.33,5.329,9.924,9.924,0,0,1-7.76,0A9.854,9.854,0,0,1,.79,17.478a9.92,9.92,0,0,1,0-7.759A9.855,9.855,0,0,1,6.12,4.39a9.924,9.924,0,0,1,7.76,0,9.854,9.854,0,0,1,5.33,5.329A9.769,9.769,0,0,1,20,13.6Z" transform="translate(0 -3.6)" fill={other ? "#fff" : color}/>
+                                <path id="genderless" d="M17.778,13.6A7.49,7.49,0,0,0,15.5,8.1,7.488,7.488,0,0,0,10,5.822,7.5,7.5,0,0,0,4.5,8.1,7.488,7.488,0,0,0,2.222,13.6,7.488,7.488,0,0,0,4.5,19.092,7.5,7.5,0,0,0,10,21.375a7.488,7.488,0,0,0,5.5-2.282A7.49,7.49,0,0,0,17.778,13.6ZM20,13.6a9.769,9.769,0,0,1-.79,3.88,9.854,9.854,0,0,1-5.33,5.329,9.924,9.924,0,0,1-7.76,0A9.854,9.854,0,0,1,.79,17.478a9.92,9.92,0,0,1,0-7.759A9.855,9.855,0,0,1,6.12,4.39a9.924,9.924,0,0,1,7.76,0,9.854,9.854,0,0,1,5.33,5.329A9.769,9.769,0,0,1,20,13.6Z" transform="translate(0 -3.6)" fill={sex === "other" ? "#fff" : color}/>
                             </svg>
                         </div>
                     </OtherIcon>
-                    <FamaleIcon select={female} color={color}>
+                    <FamaleIcon selected={sex} color={color}>
                         <div onClick={() => {
                             setSex("female");
-                            setMale(false);
-                            setFemale(true);
-                            setOther(false);
                         }}>
                             <svg xmlns="http://www.w3.org/2000/svg" width="13.466" height="20.205" viewBox="0 0 13.466 20.205">
-                                <path id="gender-female" d="M16.574,17.9a6.733,6.733,0,1,0-1.683,0v1.742H10.683V21.33h4.208V24.7h1.683V21.33h4.208V19.647H16.574Zm-5.891-6.674a5.05,5.05,0,1,1,5.05,5.05,5.05,5.05,0,0,1-5.05-5.05Z" transform="translate(-9 -4.492)" fill={female ? "#fff" : color}/>
+                                <path id="gender-female" d="M16.574,17.9a6.733,6.733,0,1,0-1.683,0v1.742H10.683V21.33h4.208V24.7h1.683V21.33h4.208V19.647H16.574Zm-5.891-6.674a5.05,5.05,0,1,1,5.05,5.05,5.05,5.05,0,0,1-5.05-5.05Z" transform="translate(-9 -4.492)" fill={sex === "female" ? "#fff" : color}/>
                             </svg>
                         </div>
                     </FamaleIcon>
@@ -216,7 +216,7 @@ const NoodleIcon = styled.div`
 
 const UpdataForm = styled.div`
     width: 280px;
-    margin: 80px auto 162px;
+    margin: 65px auto 162px;
 `;
 
 const Sex = styled.div`

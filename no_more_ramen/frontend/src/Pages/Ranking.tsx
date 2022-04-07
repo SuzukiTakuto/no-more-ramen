@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { apiUrl } from '../utils';
 import { Input, Button, BackIcon } from '../components/components';
 import styled from 'styled-components';
@@ -18,6 +18,23 @@ const Ranking = (props: Props) => {
     const back = () => {
         history.push("/top");
     }
+
+    useEffect(() => {
+        fetch(`${apiUrl}/ramen_record/`, {
+            method: 'GET',
+        headers: {
+          'Authorization': 'JWT ' + localStorage.getItem("token"),
+          'Content-Type': 'application/json',
+        },
+      }).then((res) => {
+        return res.json();
+      }).then((data) => {
+        console.log(data);
+      }).catch(() => {
+        console.log('error');
+      });
+    })
+
   return (
     <RankingContainer>
         <BackIcon onClick={() => back()}>
