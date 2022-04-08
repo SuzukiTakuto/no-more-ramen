@@ -23,7 +23,7 @@ type Param = {
 const Setting = (props: Props) => {
   const history = useHistory();
   const [ color, setColor ] = useState('');
-  const [ isSet, setIsSet ] = useState(false);
+  const [ isSet, setIsSet ] = useState<boolean>(false);
 
   const param = useParams<Param>();
   useEffect(() => {
@@ -44,16 +44,16 @@ const Setting = (props: Props) => {
 
   props.setHeight("667px");
   const [ sex, setSex] = useState("");
-  const [ userIcon, setUserIcon ] = useState("");
-  const [ mailDeliver, setMailDeliver ] = useState(true);
+  const [ icon_id, setUserIcon ] = useState("");
+  const [ send_report, setMailDeliver ] = useState<boolean>();
 
   const { register, watch, handleSubmit, formState } = useForm<UpdataUser>({
     mode: 'onSubmit',
     reValidateMode: 'onChange',
     defaultValues: {
         sex: sex,
-        userIcon: userIcon,
-        mail_delivery: mailDeliver,
+        icon_id: icon_id,
+        send_report: send_report,
     }
   });
 
@@ -78,8 +78,8 @@ const Setting = (props: Props) => {
 
   const handleOnSubmit: SubmitHandler<UpdataUser> = async (values) => {
     values.sex = sex;
-    values.mail_delivery = mailDeliver;
-    values.userIcon = userIcon;
+    if (send_report !== undefined) values.send_report = send_report;
+    values.icon_id = icon_id;
     console.log(values);
 
     return fetch (`${apiUrl}/account/update/`, {
@@ -111,20 +111,20 @@ const Setting = (props: Props) => {
   }
 
   const logout = () => {
+      // console.log(body)
       fetch(`${apiUrl}/account/logout/`, {
         method: 'GET',
+        mode: 'cors',
+        cache: 'no-cache',
+        credentials: 'same-origin',
         headers: {
             'Authorization': 'JWT ' + localStorage.getItem("token"),
             'Content-Type': 'application/json',
-          },
+        },
+        // body: JSON.stringify(body),
       }).then((res) => {
-        return res.json();
-      }).then((data) => {
-          console.log(data);
-          if (data.status === "205") {
-              localStorage.removeItem("token");
-              history.push("/usersetup");
-          }
+          localStorage.removeItem("token")
+        history.push("/usersetup");
       }).catch((err: Error) => {
           console.log(err);
       });
@@ -180,19 +180,19 @@ const Setting = (props: Props) => {
 
                 <UserIcon>
                     <InputTitle color={color}>アイコン</InputTitle>
-                    <Icon1 color={color} userIcon={userIcon} setUserIcon={setUserIcon} />
-                    <Icon2 color={color} userIcon={userIcon} setUserIcon={setUserIcon} />
-                    <Icon3 color={color} userIcon={userIcon} setUserIcon={setUserIcon} />
+                    <Icon1 color={color} userIcon={icon_id} setUserIcon={setUserIcon} />
+                    <Icon2 color={color} userIcon={icon_id} setUserIcon={setUserIcon} />
+                    <Icon3 color={color} userIcon={icon_id} setUserIcon={setUserIcon} />
 
                 </UserIcon>
 
                 <MailDeliver>
                     <InputTitle color={color}>メール配信</InputTitle>
-                    <MailDeliverSwitchYes color={color} mailDeliver={mailDeliver} onClick={(e: React.MouseEvent<HTMLElement, MouseEvent>) => {
+                    <MailDeliverSwitchYes color={color} mailDeliver={send_report} onClick={(e: React.MouseEvent<HTMLElement, MouseEvent>) => {
                         e.preventDefault();
                         setMailDeliver(true);
                     }}>はい</MailDeliverSwitchYes>
-                    <MailDeliverSwitchNo color={color} mailDeliver={mailDeliver} onClick={(e: React.MouseEvent<HTMLElement, MouseEvent>) => {
+                    <MailDeliverSwitchNo color={color} mailDeliver={send_report} onClick={(e: React.MouseEvent<HTMLElement, MouseEvent>) => {
                         e.preventDefault();
                         setMailDeliver(false);
                     }}>いいえ</MailDeliverSwitchNo>
@@ -243,7 +243,7 @@ const InputTitle = styled.div<{color: string}>`
     color: #8C8C8C;
 `;
 
-const MailDeliverSwitchYes = styled.button<{mailDeliver: boolean, color: string}>`
+const MailDeliverSwitchYes = styled.button<{mailDeliver?: boolean, color: string}>`
     cursor: pointer;
     width: 80px;
     height: 24px;
@@ -255,7 +255,7 @@ const MailDeliverSwitchYes = styled.button<{mailDeliver: boolean, color: string}
     border-radius: 16px;
 `;
 
-const MailDeliverSwitchNo = styled.button<{mailDeliver: boolean, color: string}>`
+const MailDeliverSwitchNo = styled.button<{mailDeliver?: boolean, color: string}>`
     cursor: pointer;
     width: 80px;
     height: 24px;

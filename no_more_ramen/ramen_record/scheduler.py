@@ -1,5 +1,4 @@
 from datetime import datetime, timedelta, time
-from dateutil.relativedelta import relativedelta
 from django.contrib.auth import get_user_model
 from django.db.models import Sum
 from django.template.loader import render_to_string
@@ -13,7 +12,10 @@ User = get_user_model()
 def send_report():
     target_users = User.objects.filter(send_report=True)
     now = datetime.now()
-    first_date_last_month = datetime.combine(now.date() - timedelta(days=1) + relativedelta(days=1), time())
+    first_date_last_month = now.date() - timedelta(days=1)
+    first_date_last_month = first_date_last_month.replace(day=1)
+    first_date_last_month = datetime.combine(first_date_last_month, time())
+    print(now, first_date_last_month)
     for user in target_users:
         ramen_count = RamenRecord.objects.filter(owner=user, date_time__range=[first_date_last_month, now]).count()
         if ramen_count != 0:
@@ -44,11 +46,8 @@ def send_report():
 
 
 def start():
-    """
-    Scheduling data update
-    Run update function once every 12 seconds
-    """
     scheduler = BackgroundScheduler()
+    # send_report()
 
     scheduler.add_job(send_report, 'cron', day=1)  # schedule
     scheduler.start()

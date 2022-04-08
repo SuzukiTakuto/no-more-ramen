@@ -46,12 +46,10 @@ class CreateUserView(generics.CreateAPIView):
 
 
 class CreateUserCompleteView(views.APIView):
-    """メール内URLアクセス後のユーザー本登録"""
     timeout_seconds = getattr(settings, 'ACTIVATION_TIMEOUT_SECONDS', 60 * 60 * 24)  # デフォルトでは1日以内
     permission_classes = [AllowAny]
 
     def get(self, request, **kwargs):
-        """tokenが正しければ本登録."""
         token = kwargs.get('token')
         try:
             user_pk = loads(token, max_age=self.timeout_seconds)
@@ -72,7 +70,6 @@ class CreateUserCompleteView(views.APIView):
                 return Response({"status": 400, "error": "user doesn't exist"}, status=status.HTTP_400_BAD_REQUEST)
             else:
                 if not user.is_active:
-                    # 問題なければ本登録とする
                     user.is_active = True
                     user.save()
                     token = RefreshToken.for_user(user)

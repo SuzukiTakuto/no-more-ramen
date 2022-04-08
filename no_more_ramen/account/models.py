@@ -11,9 +11,6 @@ class UserManager(BaseUserManager):
     use_in_migrations = True
 
     def _create_user(self, email, username, password, **extra_fields):
-        """
-       Create and save a user with the given username, email, and password.
-       """
         if not username:
             raise ValueError('The given username must be set')
         if not email:
@@ -75,8 +72,7 @@ class User(AbstractBaseUser, PermissionsMixin):
         _('username'),
         max_length=50,
         unique=True,
-        # help_text=_('Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.'),
-        help_text='この項目は必須です。全角文字、半角英数字、@/./+/-/_ で50文字以下にしてください。',
+        help_text=_('Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.'),
         validators=[username_validator],
         error_messages={
             'unique': _("A user with that username already exists."),
