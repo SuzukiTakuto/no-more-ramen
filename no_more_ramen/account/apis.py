@@ -21,7 +21,6 @@ class CreateUserView(generics.CreateAPIView):
 
     @transaction.atomic
     def post(self, request, *args, **kwargs):
-        """仮登録と本登録用のメールの発行"""
         serializer = CreateUserSerializer(data=request.data)
         if serializer.is_valid() is False:
             serializer.errors["status"] = 400
