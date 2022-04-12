@@ -49,5 +49,7 @@ class CreateRamenRecordSerializer(serializers.ModelSerializer):
             calorie=calorie
         )
         ramen.save()
+        owner.calorie_per_month += calorie
+        owner.save()
 
         return ramen

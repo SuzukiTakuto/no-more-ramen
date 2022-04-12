@@ -21,6 +21,7 @@ const DottedLine = () => {
 const IconContainer = styled.div`
     width: 4px;
     height: 20px;
+    margin: o auto;
 `;
 
 export default DottedLine;

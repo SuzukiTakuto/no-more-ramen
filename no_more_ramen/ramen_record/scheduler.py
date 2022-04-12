@@ -1,4 +1,4 @@
-from datetime import datetime, timedelta, time
+from datetime import datetime, timedelta, time, date
 from django.contrib.auth import get_user_model
 from django.db.models import Sum
 from django.template.loader import render_to_string
@@ -7,6 +7,15 @@ from apscheduler.schedulers.background import BackgroundScheduler
 from .models import RamenRecord
 
 User = get_user_model()
+
+
+def update_month_score():
+    delete_score_date = date.today() - timedelta(days=31)
+    target_records = RamenRecord.objects.filter(date_time__date=delete_score_date).values("calorie", "owner")
+    for record in target_records:
+        owner = record["owner"]
+        owner.calorie_per_month -= record["calorie"]
+        owner.save()
 
 
 def send_report():
@@ -20,7 +29,7 @@ def send_report():
         ramen_count = RamenRecord.objects.filter(owner=user, date_time__range=[first_date_last_month, now]).count()
         if ramen_count != 0:
             total_calorie = RamenRecord.objects.filter(owner=user,
-                                                                date_time__range=[first_date_last_month, now]).aggregate(
+                                                       date_time__range=[first_date_last_month, now]).aggregate(
                 Sum("calorie")).get("calorie__sum")
         else:
             total_calorie = 0
@@ -49,5 +58,6 @@ def start():
     scheduler = BackgroundScheduler()
     # send_report()
 
+    scheduler.add_job(update_month_score, 'cron', hour=0)
     scheduler.add_job(send_report, 'cron', day=1)  # schedule
     scheduler.start()

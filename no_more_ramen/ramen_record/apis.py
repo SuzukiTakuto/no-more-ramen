@@ -69,7 +69,7 @@ class RamenCalenderView(views.APIView):
 
 
 class CreateRamenRecordView(generics.CreateAPIView):
-    permission_classes = [AllowAny]
+    permission_classes = [IsAuthenticated]
     serializer_class = CreateRamenRecordSerializer
     queryset = RamenRecord.objects.all()
 
@@ -83,4 +83,14 @@ class CreateRamenRecordView(generics.CreateAPIView):
         return Response({"status": 201, "ramen_record_id": ramen_object.pk}, status=status.HTTP_201_CREATED)
 
 
+class RamenRankView(views.APIView):
+    permission_classes = [IsAuthenticated]
 
+    def get(self, request):
+        user = request.user
+        rank = User.objects.order_by("-calorie_per_month").values("username", "calorie_per_month", "icon_id")
+        if len(rank) > 20:
+            rank = rank[:20]
+        user_rank = User.objects.filter(calorie_per_month__gte=user.calorie_per_month).count()
+
+        return Response({"status": 200, "rank": rank, "my_rank": {"username": user.username, "rank": user_rank, "icon_id": user.icon_id, "calorie_per_month": user.calorie_per_month}})

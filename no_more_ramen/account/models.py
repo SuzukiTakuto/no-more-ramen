@@ -106,6 +106,11 @@ class User(AbstractBaseUser, PermissionsMixin):
         default=True
     )
 
+    calorie_per_month = models.IntegerField(
+        _("30-day score"),
+        default=0
+    )
+
     is_admin = models.BooleanField(default=False)
     is_staff = models.BooleanField(_('staff status'), default=False)
     is_active = models.BooleanField(

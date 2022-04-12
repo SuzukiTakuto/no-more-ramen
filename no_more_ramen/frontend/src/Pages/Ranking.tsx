@@ -47,7 +47,7 @@ const Ranking = (props: Props) => {
       }).catch(() => {
         console.log('error');
       });
-    })
+    }, [])
 
   return (
     <RankingContainer>
