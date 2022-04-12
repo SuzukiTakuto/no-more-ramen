@@ -50,7 +50,7 @@ export type CalenderType = {
 }
 
 export type RankItem = {
-    score: number,
+    calorie_per_month: number,
     icon_id: number,
     username: string,
     rank: number

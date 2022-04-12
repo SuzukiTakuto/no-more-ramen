@@ -12,10 +12,10 @@ const RankingItem = (props: Props) => {
   useEffect(() => {
       console.log("read");
       switch (true) {
-        case props.score > 6000:
+        case props.calorie_per_month > 6000:
             setColor('#FFC400');
             break;
-        case props.score > 15000:
+        case props.calorie_per_month > 15000:
             setColor("#E0470E");
             break;
     }
@@ -50,7 +50,7 @@ const RankingItem = (props: Props) => {
         
         
         <Username>{props.username}</Username>
-        <Score color={color}>{props.score}</Score>
+        <Score color={color}>{props.calorie_per_month}</Score>
     </ItemContainer>
   )
 }

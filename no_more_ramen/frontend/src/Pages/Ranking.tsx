@@ -23,7 +23,7 @@ const Ranking = (props: Props) => {
 
     const [rankList, setRnakList] = useState<RankItem[]>([]);
     const [myRank, setMuRank] = useState<RankItem>({
-      score: 0,
+      calorie_per_month: 0,
       icon_id: 0,
       username: "",
       rank: 0
