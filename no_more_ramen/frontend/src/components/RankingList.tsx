@@ -11,7 +11,7 @@ type Props = {
 
 const RankingList = (props: Props) => {
   return (
-    <div>
+    <ListContainer>
         {props.rankList.map((item, index) => (
           <RankingItem calorie_per_month={item.calorie_per_month} icon_id={item.icon_id} username={item.username} rank={index + 1} />
         ))}
@@ -21,8 +21,12 @@ const RankingList = (props: Props) => {
             <RankingItem calorie_per_month={props.myRank.calorie_per_month} icon_id={props.myRank.icon_id} username={props.myRank.username} rank={props.myRank.rank} bgcolor={"rgba(75, 75, 75, 0.1)"} />
           </>
         )}
-    </div>
+    </ListContainer>
   )
 }
+
+const ListContainer = styled.div`
+  margin: 24px auto 0;
+`;
 
 export default RankingList
