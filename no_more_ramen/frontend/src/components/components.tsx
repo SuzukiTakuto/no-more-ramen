@@ -105,3 +105,8 @@ export const QuestionText = styled.p`
     color: #4B4B4B;
     text-align: right;
 `;
+
+export const ErrorMessage = styled.p`
+    font-size: 12px;
+    color: #4b4b4b;
+`;
