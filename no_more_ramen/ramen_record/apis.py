@@ -77,8 +77,7 @@ class CreateRamenRecordView(generics.CreateAPIView):
     def post(self, request, *args, **kwargs):
         serializer = CreateRamenRecordSerializer(data=request.data, context={"user": request.user})
         if serializer.is_valid() is False:
-            serializer.errors["status"] = 400
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            return Response({"status": 400, "error": serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
         ramen_object = serializer.save()
 
         return Response({"status": 201, "ramen_record_id": ramen_object.pk}, status=status.HTTP_201_CREATED)

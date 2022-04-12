@@ -44,7 +44,7 @@ const Setting = (props: Props) => {
 
   props.setHeight("667px");
   const [ sex, setSex] = useState("");
-  const [ icon_id, setUserIcon ] = useState("");
+  const [ icon_id, setUserIcon ] = useState(0);
   const [ send_report, setMailDeliver ] = useState<boolean>();
 
   const { register, watch, handleSubmit, formState } = useForm<UpdataUser>({

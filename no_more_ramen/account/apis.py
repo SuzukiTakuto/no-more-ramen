@@ -23,8 +23,7 @@ class CreateUserView(generics.CreateAPIView):
     def post(self, request, *args, **kwargs):
         serializer = CreateUserSerializer(data=request.data)
         if serializer.is_valid() is False:
-            serializer.errors["status"] = 400
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            return Response({"status": 400, "error": serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
         serializer.save()
 
         user = User.objects.get(email=request.data["email"])
@@ -112,7 +111,6 @@ class UpdateUserView(views.APIView):
         user = request.user
         serializer = UpdateUserSerializer(instance=user, data=request.data)
         if serializer.is_valid() is False:
-            serializer.errors["status"] = 400
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            return Response({"status": 400, "error": serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
         serializer.save()
         return Response({"status": 200, "username": user.username}, status=status.HTTP_200_OK)

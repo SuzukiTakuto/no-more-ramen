@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 type Props = {
     score: number,
-    iconNo: string,
+    iconNo: number,
     username: string,
     rank: number
 }

@@ -2,9 +2,10 @@ import React from 'react';
 import { useForm, SubmitHandler, SubmitErrorHandler } from 'react-hook-form';
 import { apiUrl } from '../utils';
 import { useHistory } from 'react-router-dom';
-import { Button, Message, Form, Input } from '../components/components';
+import {Button, Message, Form, Input, BackIcon} from '../components/components';
 import { ReactComponent as Noodle } from '../icons/noodle.svg';
 import { NoodleIcon } from '../components/components';
+import Back from "../icons/Back";
 
 type LoginUser = {
     email: string,
@@ -13,6 +14,10 @@ type LoginUser = {
 
 const Login = () => {
   const history = useHistory();
+
+  const back = () => {
+      history.push("/usersetup");
+  }
 
   const { register, watch, handleSubmit, formState } = useForm<LoginUser>({
       mode: 'onSubmit',
@@ -54,6 +59,9 @@ const Login = () => {
 
   return (
     <>
+        <BackIcon onClick={() => back()}>
+            <Back />
+        </BackIcon>
         <NoodleIcon>
             <Noodle />
         </NoodleIcon>

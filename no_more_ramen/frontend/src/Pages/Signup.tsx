@@ -4,10 +4,11 @@ import { User, SignupUser } from '../type/type';
 import { useHistory } from 'react-router-dom';
 import { apiUrl } from '../utils';
 import styled from 'styled-components';
-import { Button, Message, Form, Input } from '../components/components';
+import {Button, Message, Form, Input, BackIcon} from '../components/components';
 import { ReactComponent as Noodle } from '../icons/noodle.svg';
 import { NoodleIcon } from '../components/components';
 import { MaleIcon, FamaleIcon, OtherIcon, ErrorMessage } from '../components/components';
+import Back from '../icons/Back';
 
 const Signup = () => {
   const history = useHistory();
@@ -16,6 +17,10 @@ const Signup = () => {
   const [ emailError, setEmailError ] = useState("");
   const [ passwordError, setPasswordError ] = useState("");
   const [ password2Error, setPassword2Error ] = useState("");
+
+  const back = () => {
+      history.push("/usersetup");
+  }
 
   const { register, watch, handleSubmit, formState } = useForm<SignupUser>({
   mode: 'onSubmit',
@@ -48,22 +53,38 @@ const Signup = () => {
     }).then((data) => {
         //window.location.href = "http://localhost:3000/login";
         console.log(data);
+        console.log("www")
         if (data.status === 201) {
+            console.log(data)
             history.push(`/send_email`);
         } else {
+            console.log(data)
             const error = Object.keys(data);
-            switch (data[0]) {
+            console.log(error);
+            switch (Object.keys(data.error)[0]) {
                 case "username":
-                    setUsernameError(data.username);
+                    setUsernameError(data.error.username[0]);
+                    setEmailError("");
+                    setPasswordError("");
+                    setPassword2Error("");
                     break;
                 case "email":
-                    setEmailError(data.email);
+                    setEmailError(data.error.email[0]);
+                    setUsernameError("");
+                    setPasswordError("");
+                    setPassword2Error("");
                     break;
                 case "password":
-                    setPasswordError(data.password);
+                    setPasswordError(data.error.password[0]);
+                    setUsernameError("");
+                    setEmailError("");
+                    setPassword2Error("");
                     break;
                 case "password2":
-                    setPassword2Error(data.password2);
+                    setPassword2Error(data.error.password2[0]);
+                    setUsernameError("");
+                    setEmailError("");
+                    setPasswordError("");
                     break;
             }
         }
@@ -79,6 +100,9 @@ const Signup = () => {
 
   return (
     <>
+        <BackIcon onClick={() => back()}>
+            <Back />
+        </BackIcon>
         <NoodleIcon>
             <Noodle />
         </NoodleIcon>

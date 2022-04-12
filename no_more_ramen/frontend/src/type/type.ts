@@ -14,7 +14,7 @@ export type SignupUser = {
 
 export type UpdataUser = {
     sex: string,
-    icon_id: string,
+    icon_id: number,
     send_report: boolean
 }
 

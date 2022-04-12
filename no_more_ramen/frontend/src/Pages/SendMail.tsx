@@ -17,7 +17,7 @@ const SendMail = () => {
             <CompleteNoodle />
         </CompleteNoodleIcon>
         <Message>メールをお送りしました。</Message>
-        <Button bgColor={"#fff"} color={"#2BAD62"} stroke={"1px solid #2BAD62"} mt={"242px auto 0;"} onClick={() => onClick}>戻る</Button>
+        <Button bgColor={"#fff"} color={"#2BAD62"} stroke={"1px solid #2BAD62"} mt={"242px auto 0;"} onClick={() => onClick()}>戻る</Button>
     </CompleteContainer>
   )
 }
