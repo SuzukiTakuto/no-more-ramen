@@ -48,3 +48,10 @@ export type CalenderType = {
     week4: boolean[]
     week5: boolean[]
 }
+
+export type RankItem = {
+    score: number,
+    icon_id: number,
+    username: string,
+    rank: number
+}
