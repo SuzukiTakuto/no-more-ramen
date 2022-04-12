@@ -59,9 +59,10 @@ const ItemContainer = styled.div<{color: string, bgColor?: string}>`
     display: flex;
     justify-content: space-between;
     align-items: center;
-    width: 298px;
+    width: 336px;
     margin: 0 auto 16px;
     background-color: ${({bgColor}) => bgColor ? bgColor : "#fff"};
+    border-radius: 8px;
 `;
 
 const Rank = styled.p`
