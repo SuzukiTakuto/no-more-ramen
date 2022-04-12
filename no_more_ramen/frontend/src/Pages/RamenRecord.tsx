@@ -128,8 +128,6 @@ const RamenRecord = (props: Props) => {
         e.preventDefault();
         console.log(data);
 
-        if (!data.type || !data.rice || !data.date_time) return
-
         fetch(`${apiUrl}/ramen_record/create/`, {
             method: 'POST',
             mode: 'cors',
@@ -145,7 +143,7 @@ const RamenRecord = (props: Props) => {
             return res.json();
         }).then((data) => {
             console.log(data);
-            history.push(`/top`);
+            if (data.status === 201) history.push(`/top`);
         }).catch(()=>{
             console.log("error");
         });
@@ -216,6 +214,7 @@ const RamenRecord = (props: Props) => {
                         <option value="09">09</option>
                         <option value="10">10</option>
                         <option value="11">11</option>
+                        <option value="11">12</option>
                         <option value="13">13</option>
                         <option value="14">14</option>
                         <option value="15">15</option>
