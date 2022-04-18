@@ -7,7 +7,14 @@ import Login from './Pages/Login';
 import Signup from './Pages/Signup';
 import SendMail from './Pages/SendMail';
 import Complete from './Pages/Complete';
-import styled,{ createGlobalStyle } from 'styled-components';
+import styled,{ 
+  createGlobalStyle, 
+  ThemeProvider, 
+  css,
+  CSSObject,
+  FlattenSimpleInterpolation,
+  SimpleInterpolation, 
+} from 'styled-components';
 import reset from 'styled-reset';
 import Setting from './Pages/Setting';
 import RamenRecord from './Pages/RamenRecord';
@@ -19,7 +26,7 @@ function App() {
   return (
     <>
       <GlobalStyle />
-      <MainWrapper height={height}>
+      <MainWrapper height={height} sp={sp}>
         <BrowserRouter>
           <Switch>
             <Route path={"/usersetup"}>
@@ -68,7 +75,16 @@ const GlobalStyle = createGlobalStyle`
     font-smoothing: antialiased;
 `;
 
-const MainWrapper = styled.div<{height: string}>`
+const sp = (
+  first: CSSObject | TemplateStringsArray,
+  ...interpolations: SimpleInterpolation[]
+): FlattenSimpleInterpolation => css`
+  @media (max-width: 560px) {
+      ${css(first, ...interpolations)}
+  }
+`;
+
+const MainWrapper = styled.div<{height: string, sp: (first: CSSObject | TemplateStringsArray, ...interpolations: SimpleInterpolation[]) => FlattenSimpleInterpolation}>`
   width: 375px;
   height: ${({height}) => height};
   background-color: #fff;
@@ -77,6 +93,11 @@ const MainWrapper = styled.div<{height: string}>`
   padding-top: 68px;
   box-sizing: border-box;
   position: relative;
+
+  ${sp`
+        width: 100%;
+        margin: 0;
+  `}
 `;
 
 export default App;
