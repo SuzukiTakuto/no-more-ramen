@@ -13,7 +13,7 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 from pathlib import Path
 from datetime import timedelta
 
-DEBUG = True
+DEBUG = False
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -173,7 +173,6 @@ EMAIL_PORT = 587
 EMAIL_HOST_USER = 'nikkii.official126@gmail.com'
 EMAIL_HOST_PASSWORD = 'retjgevawkvyjlbs'
 EMAIL_USE_TLS = True
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
 DATABASES = {
   'default': {

@@ -1,3 +1,5 @@
+from datetime import timedelta
+
 from rest_framework import serializers
 from django.utils import timezone
 
@@ -49,7 +51,9 @@ class CreateRamenRecordSerializer(serializers.ModelSerializer):
             calorie=calorie
         )
         ramen.save()
-        owner.calorie_per_month += calorie
-        owner.save()
+        delete_score_date = timezone.now().date() - timedelta(days=31)
+        if delete_score_date < date_time.date():
+            owner.calorie_per_month += calorie
+            owner.save()
 
         return ramen

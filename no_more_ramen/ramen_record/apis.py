@@ -4,6 +4,7 @@ from dateutil.relativedelta import relativedelta
 from django.contrib.auth import get_user_model
 from django.db import transaction
 from django.db.models import Sum
+from django.utils import timezone
 from rest_framework import views, status, generics
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.response import Response
@@ -33,9 +34,9 @@ class UserParameterView(views.APIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, request):
-        one_month = datetime.datetime.now() - datetime.timedelta(days=30)
-        if RamenRecord.objects.filter(owner=request.user, date_time__range=[one_month, datetime.datetime.now()]).exists():
-            month_calorie = RamenRecord.objects.filter(owner=request.user, date_time__range=[one_month, datetime.datetime.now()]).aggregate(Sum("calorie")).get('calorie__sum')
+        one_month = timezone.now() - datetime.timedelta(days=30)
+        if RamenRecord.objects.filter(owner=request.user, date_time__range=[one_month, timezone.now()]).exists():
+            month_calorie = RamenRecord.objects.filter(owner=request.user, date_time__range=[one_month, timezone.now()]).aggregate(Sum("calorie")).get('calorie__sum')
         else:
             month_calorie = 0
 
@@ -52,9 +53,9 @@ class RamenCalenderView(views.APIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, request):
-        first_date_this_week = datetime.date.today() - relativedelta(days=datetime.date.today().weekday()) - datetime.timedelta(days=1)
+        first_date_this_week = datetime.date.today() - relativedelta(days=datetime.date.today().weekday()) - datetime.timedelta(days=2)
         calender_date_matrix = [[first_date_this_week + datetime.timedelta(days=i) - datetime.timedelta(days=7*j) for i in range(7)] for j in range(5)]
-        now = datetime.datetime.now()
+        now = timezone.now()
         calender_max_range = now - datetime.timedelta(days=35)
         if RamenRecord.objects.filter(owner=request.user, date_time__range=[calender_max_range, now]).exists():
             ramen_date_list = [ramen["date_time"].date() for ramen in RamenRecord.objects.filter(owner=request.user, date_time__range=[calender_max_range, now]).values("date_time")]

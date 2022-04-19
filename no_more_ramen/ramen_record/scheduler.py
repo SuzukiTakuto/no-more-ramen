@@ -1,6 +1,7 @@
-from datetime import datetime, timedelta, time, date
+from datetime import datetime, timedelta, time
 from django.contrib.auth import get_user_model
 from django.db.models import Sum
+from django.utils import timezone
 from django.template.loader import render_to_string
 from apscheduler.schedulers.background import BackgroundScheduler
 
@@ -10,7 +11,7 @@ User = get_user_model()
 
 
 def update_month_score():
-    delete_score_date = date.today() - timedelta(days=31)
+    delete_score_date = timezone.now().date() - timedelta(days=31)
     target_records = RamenRecord.objects.filter(date_time__date=delete_score_date).values("calorie", "owner")
     for record in target_records:
         owner = record["owner"]
@@ -20,7 +21,7 @@ def update_month_score():
 
 def send_report():
     target_users = User.objects.filter(send_report=True)
-    now = datetime.now()
+    now = timezone.now()
     first_date_last_month = now.date() - timedelta(days=1)
     first_date_last_month = first_date_last_month.replace(day=1)
     first_date_last_month = datetime.combine(first_date_last_month, time())

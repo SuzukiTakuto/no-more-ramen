@@ -12,11 +12,11 @@ const RankingItem = (props: Props) => {
   useEffect(() => {
       console.log("read");
       switch (true) {
-        case props.calorie_per_month > 6000:
-            setColor('#FFC400');
-            break;
         case props.calorie_per_month > 15000:
             setColor("#E0470E");
+            break;
+        case props.calorie_per_month > 6000:
+            setColor('#FFC400');
             break;
     }
   }, []);
@@ -89,6 +89,9 @@ const Username = styled.p`
 
 const Score = styled.p<{color: string}>`
     color: ${({color}) => color};
+    display: block;
+    width: 50px;
+    text-align: right;
 `;
 
 const RankIcon = styled.div`
