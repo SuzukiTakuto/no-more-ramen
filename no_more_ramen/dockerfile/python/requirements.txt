@@ -1,9 +1,0 @@
-django==4.0.3
-djangorestframework==3.13.1
-djangorestframework-simplejwt==5.1.0
-django-cors-headers==3.11.0
-dj_database_url==0.5.0
-mysqlclient==2.1.0
-pymysql==1.0.2
-python-dateutil==2.8.2
-apscheduler==3.9.1
